@@ -27,6 +27,7 @@ var feltTextureImageY;
 function preload() {
   clownImage = loadImage("assets/images/clown.png");
   feltTextureImage = loadImage("assets/images/black-felt-texture.png");
+  turtle = loadImage("assets/images/turty.png")
 }
 
 
@@ -46,6 +47,10 @@ function setup() {
   feltTextureImageX = width/2;
   feltTextureImageY = 0 - feltTextureImage.height/2;
 
+  // Start the turtle image perfectly off screen at the left of the canvas
+  turtleX= 0 - turtle.width/2;
+  turtleY= width/2;
+
   // We'll use imageMode CENTER for this script
   imageMode(CENTER);
 }
@@ -63,6 +68,12 @@ function draw() {
 
   // Display the felt image
   image(feltTextureImage,feltTextureImageX,feltTextureImageY);
+
+  // Move the turtle image right by increasing its x position
+  turtleX += 1;
+
+  // Display the turtle image
+  image(turtle,turtleX,turtleY);
 
   // Move the clown by moving it 1/10th of its current distance from the mouse
 
