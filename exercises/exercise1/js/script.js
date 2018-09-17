@@ -37,6 +37,12 @@ var wave;
 var waveX;
 var waveY;
 
+// Little turtle
+var lilturtle;
+// Little turtle position
+var lilturtleX;
+var lilturtleY;
+
 
 // preload()
 //
@@ -48,6 +54,7 @@ function preload() {
   turtle = loadImage("assets/images/turty.png")
   banana = loadImage("assets/images/banana.png")
   wave = loadImage("assets/images/wave.png")
+  lilturtle = loadImage("assets/images/turty.png")
 }
 
 
@@ -79,6 +86,11 @@ function setup() {
   turtleX= 0 - turtle.width/2;
   turtleY= width/2;
 
+  // Start the little turtle image perfectly off screen at the left of the canvas
+  lilturtleX= 0 - turtle.width/2;
+  lilturtleY= width/2;
+
+
   // We'll use imageMode CENTER for this script
   imageMode(CENTER);
 }
@@ -102,6 +114,14 @@ function draw() {
 
   // Display the turtle image
   image(turtle,turtleX,turtleY);
+
+  // Move the little turtle image right by increasing its x position
+  lilturtleX += 0.5;
+  // Move the little turtle up and down with a sin wave;
+  lilturtleY += Math.sin(lilturtleX/100);
+
+  // Display the little turtle image
+  image(lilturtle,lilturtleX,lilturtleY);
 
   // Move the wave of 1/30th of its current distance from the mouse
 
