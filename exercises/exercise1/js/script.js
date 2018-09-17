@@ -19,6 +19,18 @@ var feltTextureImage;
 var feltTextureImageX;
 var feltTextureImageY;
 
+// The image of a turtle
+var turtle;
+// The current position of the turtle;
+var turtleX;
+var turtleY;
+
+// The image of a banana
+var banana;
+// The current position of the banana;
+var bananaX;
+var bananaY;
+
 
 // preload()
 //
@@ -28,6 +40,7 @@ function preload() {
   clownImage = loadImage("assets/images/clown.png");
   feltTextureImage = loadImage("assets/images/black-felt-texture.png");
   turtle = loadImage("assets/images/turty.png")
+  banana = loadImage("assets/images/banana.png")
 }
 
 
@@ -42,6 +55,10 @@ function setup() {
   // Start the clown image at the centre of the canvas
   clownImageX = width/2;
   clownImageY = height/2;
+
+  // Start the banana image at the centre of the canvas
+  bananaX = width/2;
+  bananaY = width/2;
 
   // Start the felt image perfectly off screen above the canvas
   feltTextureImageX = width/2;
@@ -86,4 +103,11 @@ function draw() {
 
   // Display the clown image
   image(clownImage,clownImageX,clownImageY);
+
+  //Move the banana at the mouse x and y location
+  bananaX = mouseX;
+  bananaY = mouseY;
+
+  // Display the banana image;
+  image(banana,bananaX,bananaY);
 }
