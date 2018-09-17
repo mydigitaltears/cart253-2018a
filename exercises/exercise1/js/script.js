@@ -27,9 +27,15 @@ var turtleY;
 
 // The image of a banana
 var banana;
-// The current position of the banana;
+// The current position of the banana
 var bananaX;
 var bananaY;
+
+// The image of a wave
+var wave;
+// The current position of the wave
+var waveX;
+var waveY;
 
 
 // preload()
@@ -41,6 +47,7 @@ function preload() {
   feltTextureImage = loadImage("assets/images/black-felt-texture.png");
   turtle = loadImage("assets/images/turty.png")
   banana = loadImage("assets/images/banana.png")
+  wave = loadImage("assets/images/wave.png")
 }
 
 
@@ -59,6 +66,10 @@ function setup() {
   // Start the banana image at the centre of the canvas
   bananaX = width/2;
   bananaY = width/2;
+
+  // Start the wave image at the centre of the canvas
+  waveX = width/2;
+  waveY = width/2;
 
   // Start the felt image perfectly off screen above the canvas
   feltTextureImageX = width/2;
@@ -92,6 +103,18 @@ function draw() {
   // Display the turtle image
   image(turtle,turtleX,turtleY);
 
+  // Move the wave of 1/30th of its current distance from the mouse
+
+  // Calculate the distance in X and in Y
+  var waveXdistance = mouseX - waveX;
+  var waveYdistance = mouseY - waveY;
+  // Add 1/30th of the x and y distance to the wave's current location
+  waveX = waveX + waveXdistance/30;
+  waveY = waveY + waveYdistance/30;
+
+  // Display the wave image
+  image(wave,waveX,waveY);
+
   // Move the clown by moving it 1/10th of its current distance from the mouse
 
   // Calculate the distance in X and in Y
@@ -108,6 +131,10 @@ function draw() {
   bananaX = mouseX;
   bananaY = mouseY;
 
-  // Display the banana image;
+  // Display the banana image
   image(banana,bananaX,bananaY);
+
+
+
+
 }
