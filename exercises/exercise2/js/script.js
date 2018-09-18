@@ -10,7 +10,7 @@ Starter code for exercise 2.
 // The position and size of our avatar circle
 var avatarX;
 var avatarY;
-var avatarSize = 50;
+var avatarSize = 20;
 
 // The speed and velocity of our avatar circle
 var avatarSpeed = 10;
@@ -34,18 +34,38 @@ var enemySpeedIncrease = 0.5;
 var dodges = 0;
 var tdodges = "";
 
+// Var for the background color
+var br = 0;
+var bg = 0;
+var bb = 0;
+
+
+//var enemyImage;
+//var enemyImageX;
+//var enemyImageY;
+
+//var avatarImage;
+//var avatarImageX;
+//var avatarImageY;
+
 // setup()
 //
 // Make the canvas, position the avatar and anemy
+
+// Preload the images
+function preload(){
+  enemy = loadImage("assets/images/money.ico");
+  avatar= loadImage("assets/images/PC.png");
+}
+
 function setup() {
   // Create our playing area
   createCanvas(500,500);
 
-
-
   // Put the avatar in the centre
   avatarX = width/2;
-  avatarY = height/2;
+  avatarY = height/2
+
 
   // Put the enemy to the left at a random y coordinate within the canvas
   enemyX = 0;
@@ -61,11 +81,20 @@ function setup() {
 // game over situations.
 function draw() {
   // A pink background
-  background(255,220,220);
+  background(br,bg,bb);
 
+  // Text for number of dodges
   tdodges=dodges.toString();
   text(tdodges,width-40,height-30);
-  textSize(15);
+  textSize(20);
+
+
+
+  // Display the enemy and his size as the dimage
+  image(enemy,enemyX,enemyY,enemySize,enemySize);
+
+  // Display the avatar as the image
+  image(avatar,avatarX,avatarY,100,120);
 
   // Default the avatar's velocity to 0 in case no key is pressed this frame
   avatarVX = 0;
@@ -144,19 +173,14 @@ function draw() {
     // Increase the enemy's speed and size to make the game harder
     enemySpeed = enemySpeed + enemySpeedIncrease;
     enemySize = enemySize + enemySizeIncrease;
+
+    // Randomly change the background color when a dodge happen
+    br=Math.random()*255;
+    bg=Math.random()*255;
+    bb=Math.random()*255;
   }
 
   // Display the current number of successful in the console
   console.log(dodges);
-
-  // The player is black
-  fill(0);
-  // Draw the player as a circle
-  ellipse(avatarX,avatarY,avatarSize,avatarSize);
-
-  // The enemy is red
-  fill(255,0,0);
-  // Draw the enemy as a circle
-  ellipse(enemyX,enemyY,enemySize,enemySize);
 
 }
