@@ -32,6 +32,7 @@ var enemySpeedIncrease = 0.5;
 
 // How many dodges the player has made
 var dodges = 0;
+var tdodges = "";
 
 // setup()
 //
@@ -39,6 +40,8 @@ var dodges = 0;
 function setup() {
   // Create our playing area
   createCanvas(500,500);
+
+
 
   // Put the avatar in the centre
   avatarX = width/2;
@@ -59,6 +62,10 @@ function setup() {
 function draw() {
   // A pink background
   background(255,220,220);
+
+  tdodges=dodges.toString();
+  text(tdodges,width-40,height-30);
+  textSize(15);
 
   // Default the avatar's velocity to 0 in case no key is pressed this frame
   avatarVX = 0;
