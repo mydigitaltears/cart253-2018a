@@ -39,6 +39,11 @@ var br = 0;
 var bg = 0;
 var bb = 0;
 
+// Position of smiley faces
+var smile;
+var smileX;
+var smileY;
+
 
 //var enemyImage;
 //var enemyImageX;
@@ -55,7 +60,8 @@ var bb = 0;
 // Preload the images
 function preload(){
   enemy = loadImage("assets/images/money.ico");
-  avatar= loadImage("assets/images/PC.png");
+  avatar = loadImage("assets/images/PC.png");
+  smile = loadImage("assets/images/smile.png")
 }
 
 function setup() {
@@ -65,6 +71,10 @@ function setup() {
   // Put the avatar in the centre
   avatarX = width/2;
   avatarY = height/2
+
+  // Put the smiley faces at the buttom;
+  smileX = 30;
+  smileY = height-100;
 
 
   // Put the enemy to the left at a random y coordinate within the canvas
@@ -95,6 +105,7 @@ function draw() {
 
   // Display the avatar as the image
   image(avatar,avatarX,avatarY,100,120);
+
 
   // Default the avatar's velocity to 0 in case no key is pressed this frame
   avatarVX = 0;
@@ -178,6 +189,11 @@ function draw() {
     br=Math.random()*255;
     bg=Math.random()*255;
     bb=Math.random()*255;
+  }
+
+  // Add smiley face if dodges > 5
+  if (dodges>5){
+    image(smile,smileX,smileY,80,80);
   }
 
   // Display the current number of successful in the console
