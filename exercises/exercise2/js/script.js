@@ -11,6 +11,8 @@ Starter code for exercise 2.
 var avatarX;
 var avatarY;
 var avatarSize = 20;
+var avatarWidth = 100;
+var avatarHeight = 120;
 
 // The speed and velocity of our avatar circle
 var avatarSpeed = 10;
@@ -104,7 +106,7 @@ function draw() {
   image(enemy,enemyX,enemyY,enemySize,enemySize);
 
   // Display the avatar as the image
-  image(avatar,avatarX,avatarY,100,120);
+  image(avatar,avatarX,avatarY,avatarWidth,avatarHeight);
 
 
   // Default the avatar's velocity to 0 in case no key is pressed this frame
@@ -183,7 +185,10 @@ function draw() {
     enemyY = random(0,height);
     // Increase the enemy's speed and size to make the game harder
     enemySpeed = enemySpeed + enemySpeedIncrease;
-    enemySize = enemySize + enemySizeIncrease;
+    enemySize = random(height/10,height/2);
+    avatarWidth = random(height/8,height/3);
+    avatarHeight = avatarWidth*1.2;
+    avatarSize = avatarHeight;
 
     // Randomly change the background color when a dodge happen
     br=Math.random()*255;
