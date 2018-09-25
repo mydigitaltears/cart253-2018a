@@ -14,6 +14,10 @@ https://creativenerds.co.uk/freebies/80-free-wildlife-icons-the-best-ever-animal
 var targetX;
 var targetY;
 var targetImage;
+var targetXSpeed = 200;
+var targetYSpeed = 200;
+var targetWidth;
+var targetHeight;
 
 // The ten decoy images
 var decoyImage1;
@@ -33,6 +37,11 @@ var numDecoys = 100;
 
 // Keep track of whether they've won
 var gameOver = false;
+
+// height and width of the top right corner rectangle
+var rheight = 150;
+var rwidth = 250;
+
 
 // preload()
 //
@@ -60,6 +69,8 @@ function setup() {
   createCanvas(windowWidth,windowHeight);
   background("#ffff00");
   imageMode(CENTER);
+
+
 
   // Use a for loop to draw as many decoys as we need
   for (var i = 0; i < numDecoys; i++) {
@@ -106,25 +117,61 @@ function setup() {
   // Once we've displayed all decoys, we choose a location for the target
   targetX = random(0,width);
   targetY = random(0,height);
+  // while statement so the target never appears under the corner rectangle
+  while(targetX > width-rwidth && targetY < rheight){
+    targetX = random(0,width);
+    targetY = random(0,height);
+  }
   // And draw it (this means it will always be on top)
   image(targetImage,targetX,targetY);
+
+  // top right corner rectangle
+  rectMode(CORNER);
+  fill(0);
+  rect(width-rwidth,0,rwidth,rheight);
+  fill(255);
+  textSize(20);
+  var wylf = "You are looking for:";
+  text(wylf, width-rwidth/1.15, rheight/5)
+  image(targetImage, width-rwidth/2, rheight/1.7)
+
+
+
+
+
 }
 
 function draw() {
+
   if (gameOver) {
     // Prepare our typography
     textFont("Helvetica");
     textSize(128);
     textAlign(CENTER,CENTER);
     noStroke();
-    fill(random(255));
+    fill(100,200,70);
     // Tell them they won!
     text("YOU WINNED!",width/2,height/2);
 
     noFill();
     stroke(random(255));
     strokeWeight(10);
-    ellipse(targetX,targetY,targetImage.width,targetImage.height);
+    //ellipse(targetX,targetY,targetImage.width,targetImage.height);
+
+    image(targetImage,targetX,targetY, targetWidth, targetHeight);
+    targetX+=targetXSpeed*random(-1,1);
+    if(targetX < 50 || targetX > (width-50)){
+      targetX = width/2 ;
+    }
+    targetY+=targetYSpeed*random(-1,1);
+    if(targetY < 50 || targetY > (height-50)){
+      targetY = height/2 ;
+    }
+
+    targetWidth = random (50,400);
+    targetHeight = random (50,400);
+
+
   }
 }
 
