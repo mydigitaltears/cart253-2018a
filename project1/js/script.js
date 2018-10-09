@@ -130,6 +130,13 @@ function handleInput() {
   else {
     playerVY = 0;
   }
+
+  //Sprint feature
+  if(keyIsDown(SHIFT)){
+    playerVX *= 2;
+    playerVY *= 2;
+    playerHealth = constrain(playerHealth - 1,0,playerMaxHealth);
+  }
 }
 
 // movePlayer()
