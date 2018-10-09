@@ -16,46 +16,46 @@ var gameOver = false;
 // Player position, size, velocity
 var playerX;
 var playerY;
-var playerRadius = 30;
+var playerRadius = 40;
 var playerVX = 0;
 var playerVY = 0;
-var playerMaxSpeed = 2;
+var playerMaxSpeed = 3;
 // Player health
 var playerHealth;
 var playerMaxHealth = 255;
-// Player fill color
-var playerFillR = 255;
-var playerFillG = 0;
-var playerFillB = 255;
 // Player image
 var playerImage;
+//dying speed
+var dyingSpeed = 0.5;
 
 // Prey position, size, velocity
 var preyX;
 var preyY;
-var preyRadius = 30;
+var preyRadius = 40;
 var preyVX;
 var preyVY;
 var tx = 0;
 var ty = 0;
-var preyMaxSpeed = 4;
+var preySpeed;
+var preyNormalSpeed = 1;
+var preyFastSpeed;
 // Prey health
 var preyHealth;
 var preyMaxHealth = 100;
-// Prey fill color
-var preyFill = 200;
 
 // Prey image
 var preyImage;
 
 // Amount of health obtained per frame of "eating" the prey
-var eatHealth = 10;
+var eatHealth = 5;
 // Number of prey eaten during the game
 var preyEaten = 0;
 // lvl up random number
 var lvlup;
 // Background image
 var bg;
+// Boolean for bitting
+var bite = false;
 
 //preload images
 function preload() {
@@ -81,8 +81,8 @@ function setup() {
 function setupPrey() {
   preyX = width/5;
   preyY = height/2;
-  preyVX = -preyMaxSpeed;
-  preyVY = preyMaxSpeed;
+  preyVX = -preySpeed;
+  preyVY = preySpeed;
   preyHealth = preyMaxHealth;
 }
 
@@ -104,7 +104,6 @@ function setupPlayer() {
 // When the game is over, shows the game over screen.
 function draw() {
   background(0,0,0);
-
   if (!gameOver) {
     tint(255);
     background(bg);
@@ -118,13 +117,15 @@ function draw() {
 
     drawPrey();
     drawPlayer();
-
+    console.log(preySpeed);
     lvl();
   }
   else {
     showGameOver();
   }
 }
+
+
 
 // handleInput()
 //
@@ -154,9 +155,9 @@ function handleInput() {
 
   //Sprint feature
   if(keyIsDown(SHIFT)){
-    playerVX *= 2;
-    playerVY *= 2;
-    playerHealth = constrain(playerHealth - 1,0,playerMaxHealth);
+    playerVX *= 3;
+    playerVY *= 3;
+    playerHealth = constrain(playerHealth - (dyingSpeed*2),0,playerMaxHealth);
   }
 }
 
@@ -171,17 +172,17 @@ function movePlayer() {
 
   // Wrap when player goes off the canvas
   if (playerX < 0) {
-    playerX += width;
+    playerX = 0;
   }
-  else if (playerX > width) {
-    playerX -= width;
+  else if (playerX > width-(2*playerRadius)) {
+    playerX = width-(2*playerRadius);
   }
 
   if (playerY < 0) {
-    playerY += height;
+    playerY = 0;
   }
-  else if (playerY > height) {
-    playerY -= height;
+  else if (playerY > height-(2*playerRadius)) {
+    playerY = height-(2*playerRadius);
   }
 }
 
@@ -191,7 +192,7 @@ function movePlayer() {
 // Check if the player is dead
 function updateHealth() {
   // Reduce player health, constrain to reasonable range
-  playerHealth = constrain(playerHealth - 0.5,0,playerMaxHealth);
+  playerHealth = constrain(playerHealth - dyingSpeed,0,playerMaxHealth);
   // Check if the player is dead
   if (playerHealth === 0) {
     // If so, the game is over
@@ -211,30 +212,31 @@ function checkEating() {
     playerHealth = constrain(playerHealth + eatHealth,0,playerMaxHealth);
     // Reduce the prey health
     preyHealth = constrain(preyHealth - eatHealth,0,preyMaxHealth);
-
+    // Increase prey speed while bitting
+    bite = true;
+    console.log(bite);
     // Check if the prey died
     if (preyHealth === 0) {
       // Move the "new" prey to a random position
       preyX = random(0,width);
       preyY = random(0,height);
-      // Change color
-      playerFillR = random (100,255);
-      playerFillG = random (100,255);
-      playerFillB = random (100,255);
       // Give it full health
       preyHealth = preyMaxHealth;
       // Track how many prey were eaten
       preyEaten++;
       // increase prey max speed at every lvl
-      preyMaxSpeed++
+      preyNormalSpeed++
+      // Increase dyingSpeed
+      dyingSpeed += 0.05;
+      //lvlup random perk
       lvlup = Math.floor(Math.random()*7);
       // reduce prey max preyMaxSpeed
       if (lvlup == 0){
-        preyMaxSpeed--;
+        preyNormalSpeed -= 2;
       }
       //increase player radius
       if (lvlup == 1){
-        playerRadius++;
+        playerRadius += 2;
       }
       //increase player playerMaxSpeed
       if (lvlup == 2){
@@ -242,22 +244,26 @@ function checkEating() {
       }
       //increase player max health
       if (lvlup == 3){
-        playerMaxHealth++;
+        playerMaxHealth += 10;
       }
-      //redude prey preyRadius
+      //increase prey preyRadius
       if (lvlup == 4){
-        preyRadius--;
+        preyRadius++;
       }
       // increase the eatHealth
       if (lvlup == 5){
         eatHealth++;
       }
-      // reduse prey max health
+      // increse prey max health
       if (lvlup == 6){
-        preyMaxHealth--;
+        preyMaxHealth += 10;
       }
     }
   }
+  else {
+    bite = false;
+  }
+
 }
 
 function lvl(){
@@ -285,7 +291,7 @@ function lvl(){
   }
   //redude prey preyRadius
   if (lvlup == 4){
-    text("LVL: "+preyEaten+" HUMANS ARE SMALLER!",width/2,height/1.1);
+    text("LVL: "+preyEaten+" HUMANS ARE FATTER!",width/2,height/1.1);
   }
   // increase the eatHealth
   if (lvlup == 5){
@@ -293,7 +299,7 @@ function lvl(){
   }
   // reduse prey max health
   if (lvlup == 6){
-    text("LVL: "+preyEaten+" HUMANS HAVE LESS BLOOD!",width/2,height/1.1);
+    text("LVL: "+preyEaten+" HUMANS HAVE MORE BLOOD!",width/2,height/1.1);
   }
 }
 
@@ -301,11 +307,17 @@ function lvl(){
 //
 // Moves the prey based on random velocity changes
 function movePrey() {
-
+  preyFastSpeed = preyNormalSpeed+10;
+  if (bite) {
+    preySpeed = preyFastSpeed;
+  }
+  else {
+    preySpeed = preyNormalSpeed;
+  }
 
   //use the map to convert the 0 to 1 value of noise to actual prey speed
-  preyVX = map(noise(tx),0,1,-preyMaxSpeed,preyMaxSpeed);
-  preyVY = map(noise(ty),0,1,-preyMaxSpeed,preyMaxSpeed);
+  preyVX = map(noise(tx),0,1,-preySpeed,preySpeed);
+  preyVY = map(noise(ty),0,1,-preySpeed,preySpeed);
 
   // Update prey position based on velocity
   preyX += preyVX;
@@ -314,18 +326,20 @@ function movePrey() {
   ty += 0.05;
 
   // Screen wrapping
+  preyX = constrain(preyX,0,width);
+  preyY = constrain(preyY,0,height);
   if (preyX < 0) {
-    preyX += width;
+    preyX = 0;
   }
-  else if (preyX > width) {
-    preyX -= width;
+  else if (preyX > width-(2*preyRadius)) {
+    preyX = width-(2*preyRadius);
   }
 
   if (preyY < 0) {
-    preyY += height;
+    preyY = 0;
   }
-  else if (preyY > height) {
-    preyY -= height;
+  else if (preyY > height-(2*preyRadius)) {
+    preyY = height-(2*preyRadius);
   }
 }
 
@@ -333,8 +347,6 @@ function movePrey() {
 //
 // Draw the prey as an ellipse with alpha based on health
 function drawPrey() {
-  //fill(255, 0, 0, preyHealth*1.5);
-  //ellipse(preyX,preyY,preyRadius*2);
   tint(255,preyHealth*2);
   image(preyImage, preyX, preyY, preyRadius*2, preyRadius*2);
 }
@@ -343,8 +355,6 @@ function drawPrey() {
 //
 // Draw the player as an ellipse with alpha based on health
 function drawPlayer() {
-  //fill(playerFillR, playerFillG, playerFillB, playerHealth);
-  //ellipse(playerX,playerY,playerRadius*2);
   tint(255,playerHealth*2);
   image(playerImage, playerX, playerY, playerRadius*2, playerRadius*2);
 }
