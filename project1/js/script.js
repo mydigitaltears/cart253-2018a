@@ -45,7 +45,8 @@ var preyFill = 200;
 var eatHealth = 10;
 // Number of prey eaten during the game
 var preyEaten = 0;
-
+// lvl up random number
+var lvlup;
 // setup()
 //
 // Sets up the basic elements of the game
@@ -99,6 +100,8 @@ function draw() {
 
     drawPrey();
     drawPlayer();
+
+    lvl();
   }
   else {
     showGameOver();
@@ -200,7 +203,75 @@ function checkEating() {
       preyHealth = preyMaxHealth;
       // Track how many prey were eaten
       preyEaten++;
+
+      lvlup = Math.floor(Math.random()*7);
+      // increase prey max preyMaxSpeed
+      if (lvlup == 0){
+        preyMaxSpeed++;
+      }
+      //increase player radius
+      if (lvlup == 1){
+        playerRadius++;
+
+      }
+      //increase player playerMaxSpeed
+      if (lvlup == 2){
+        playerMaxSpeed++;
+      }
+      //increase player max health
+      if (lvlup == 3){
+        playerMaxHealth++;
+      }
+      //redude prey preyRadius
+      if (lvlup == 4){
+        preyRadius--;
+      }
+      // increase the eatHealth
+      if (lvlup == 5){
+        eatHealth++;
+      }
+      // reduse prey max health
+      if (lvlup == 6){
+        preyMaxHealth--;
+      }
     }
+  }
+}
+
+function lvl(){
+  // Prepare our typography
+  textFont("Helvetica");
+  textSize(20);
+  textAlign(CENTER,CENTER);
+  noStroke();
+  fill(100,200,70);
+  // Tell them they won!
+  if (lvlup == 0){
+    text("PREY SPEED INCREASED!",width/2,height/1.2);
+  }
+  //increase player radius
+  if (lvlup == 1){
+    text("PLAYER RADIUS INCREASED!",width/2,height/1.2);
+  }
+  //increase player playerMaxSpeed
+  if (lvlup == 2){
+    text("PLAYER SPEED INCREASED!",width/2,height/1.2);
+  }
+  //increase player max health
+  if (lvlup == 3){
+    text("PLAYER HEALTH INCREASED!",width/2,height/1.2);
+  }
+  //redude prey preyRadius
+  if (lvlup == 4){
+    text("PREY RADIUS REDUCED!",width/2,height/1.2);
+  }
+  // increase the eatHealth
+  if (lvlup == 5){
+    text("YOU EAT FASTER!",width/2,height/1.2);
+  }
+  // reduse prey max health
+  if (lvlup == 6){
+    text("PREY MAX HEALTH REDUCED!",width/2,height/1.2);
   }
 }
 
