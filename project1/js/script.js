@@ -32,6 +32,8 @@ var preyY;
 var preyRadius = 25;
 var preyVX;
 var preyVY;
+var tx = 0;
+var ty = 0;
 var preyMaxSpeed = 4;
 // Prey health
 var preyHealth;
@@ -199,21 +201,17 @@ function checkEating() {
 //
 // Moves the prey based on random velocity changes
 function movePrey() {
-  // Change the prey's velocity at random intervals
-  // random() will be < 0.05 5% of the time, so the prey
-  // will change direction on 5% of frames
-  if (random() < 0.05) {
-    // Set velocity based on random values to get a new direction
-    // and speed of movement
-    // Use map() to convert from the 0-1 range of the random() function
-    // to the appropriate range of velocities for the prey
-    preyVX = map(random(),0,1,-preyMaxSpeed,preyMaxSpeed);
-    preyVY = map(random(),0,1,-preyMaxSpeed,preyMaxSpeed);
-  }
+
+
+  //use the map to convert the 0 to 1 value of noise to actual prey speed
+  preyVX = map(noise(tx),0,1,-preyMaxSpeed,preyMaxSpeed);
+  preyVY = map(noise(ty),0,1,-preyMaxSpeed,preyMaxSpeed);
 
   // Update prey position based on velocity
   preyX += preyVX;
   preyY += preyVY;
+  tx += 0.01;
+  ty += 0.05;
 
   // Screen wrapping
   if (preyX < 0) {
