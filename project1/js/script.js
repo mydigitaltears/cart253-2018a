@@ -54,6 +54,8 @@ var preyEaten = 0;
 var lvlup;
 // Background image
 var bg;
+// Sucking sound
+var mySound;
 // Boolean for bitting
 var bite = false;
 
@@ -61,6 +63,7 @@ var bite = false;
 function preload() {
   playerImage = loadImage("assets/images/M.png");
   preyImage = loadImage("assets/images/H.png");
+  mySound = loadSound("assets/sounds/mysound.mp3")
 }
 // setup()
 //
@@ -228,6 +231,9 @@ function checkEating() {
       preyNormalSpeed++
       // Increase dyingSpeed
       dyingSpeed += 0.05;
+      // Play sucking sound
+      mySound.setVolume(0.5);
+      mySound.play();
       //lvlup random perk
       lvlup = Math.floor(Math.random()*7);
       // reduce prey max preyMaxSpeed
