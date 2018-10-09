@@ -16,7 +16,7 @@ var gameOver = false;
 // Player position, size, velocity
 var playerX;
 var playerY;
-var playerRadius = 25;
+var playerRadius = 30;
 var playerVX = 0;
 var playerVY = 0;
 var playerMaxSpeed = 2;
@@ -24,12 +24,16 @@ var playerMaxSpeed = 2;
 var playerHealth;
 var playerMaxHealth = 255;
 // Player fill color
-var playerFill = 50;
+var playerFillR = 255;
+var playerFillG = 0;
+var playerFillB = 255;
+// Player image
+var playerImage;
 
 // Prey position, size, velocity
 var preyX;
 var preyY;
-var preyRadius = 25;
+var preyRadius = 30;
 var preyVX;
 var preyVY;
 var tx = 0;
@@ -41,17 +45,29 @@ var preyMaxHealth = 100;
 // Prey fill color
 var preyFill = 200;
 
+// Prey image
+var preyImage;
+
 // Amount of health obtained per frame of "eating" the prey
 var eatHealth = 10;
 // Number of prey eaten during the game
 var preyEaten = 0;
 // lvl up random number
 var lvlup;
+// Background image
+var bg;
+
+//preload images
+function preload() {
+  playerImage = loadImage("assets/images/M.png");
+  preyImage = loadImage("assets/images/H.png");
+}
 // setup()
 //
 // Sets up the basic elements of the game
 function setup() {
-  createCanvas(500,500);
+  bg = loadImage("assets/images/P.jpg");
+  createCanvas(900,680);
 
   noStroke();
 
@@ -87,9 +103,11 @@ function setupPlayer() {
 // displays the two agents.
 // When the game is over, shows the game over screen.
 function draw() {
-  background(100,100,200);
+  background(0,0,0);
 
   if (!gameOver) {
+    tint(255);
+    background(bg);
     handleInput();
 
     movePlayer();
@@ -199,20 +217,24 @@ function checkEating() {
       // Move the "new" prey to a random position
       preyX = random(0,width);
       preyY = random(0,height);
+      // Change color
+      playerFillR = random (100,255);
+      playerFillG = random (100,255);
+      playerFillB = random (100,255);
       // Give it full health
       preyHealth = preyMaxHealth;
       // Track how many prey were eaten
       preyEaten++;
-
+      // increase prey max speed at every lvl
+      preyMaxSpeed++
       lvlup = Math.floor(Math.random()*7);
-      // increase prey max preyMaxSpeed
+      // reduce prey max preyMaxSpeed
       if (lvlup == 0){
-        preyMaxSpeed++;
+        preyMaxSpeed--;
       }
       //increase player radius
       if (lvlup == 1){
         playerRadius++;
-
       }
       //increase player playerMaxSpeed
       if (lvlup == 2){
@@ -244,34 +266,34 @@ function lvl(){
   textSize(20);
   textAlign(CENTER,CENTER);
   noStroke();
-  fill(100,200,70);
+  fill(255,255,255);
   // Tell them they won!
   if (lvlup == 0){
-    text("PREY SPEED INCREASED!",width/2,height/1.2);
+    text("LVL: "+preyEaten+" HUMANS RUN SLOWER!",width/2,height/1.1);
   }
   //increase player radius
   if (lvlup == 1){
-    text("PLAYER RADIUS INCREASED!",width/2,height/1.2);
+    text("LVL: "+preyEaten+" YOU'RE BIGGER!",width/2,height/1.1);
   }
   //increase player playerMaxSpeed
   if (lvlup == 2){
-    text("PLAYER SPEED INCREASED!",width/2,height/1.2);
+    text("LVL: "+preyEaten+" YOU GO FASTER!",width/2,height/1.1);
   }
   //increase player max health
   if (lvlup == 3){
-    text("PLAYER HEALTH INCREASED!",width/2,height/1.2);
+    text("LVL: "+preyEaten+" YOU HAVE MORE HEALTH!",width/2,height/1.1);
   }
   //redude prey preyRadius
   if (lvlup == 4){
-    text("PREY RADIUS REDUCED!",width/2,height/1.2);
+    text("LVL: "+preyEaten+" HUMANS ARE SMALLER!",width/2,height/1.1);
   }
   // increase the eatHealth
   if (lvlup == 5){
-    text("YOU EAT FASTER!",width/2,height/1.2);
+    text("LVL: "+preyEaten+" YOU EAT FASTER!",width/2,height/1.1);
   }
   // reduse prey max health
   if (lvlup == 6){
-    text("PREY MAX HEALTH REDUCED!",width/2,height/1.2);
+    text("LVL: "+preyEaten+" HUMANS HAVE LESS BLOOD!",width/2,height/1.1);
   }
 }
 
@@ -311,16 +333,20 @@ function movePrey() {
 //
 // Draw the prey as an ellipse with alpha based on health
 function drawPrey() {
-  fill(preyFill,preyHealth);
-  ellipse(preyX,preyY,preyRadius*2);
+  //fill(255, 0, 0, preyHealth*1.5);
+  //ellipse(preyX,preyY,preyRadius*2);
+  tint(255,preyHealth*2);
+  image(preyImage, preyX, preyY, preyRadius*2, preyRadius*2);
 }
 
 // drawPlayer()
 //
 // Draw the player as an ellipse with alpha based on health
 function drawPlayer() {
-  fill(playerFill,playerHealth);
-  ellipse(playerX,playerY,playerRadius*2);
+  //fill(playerFillR, playerFillG, playerFillB, playerHealth);
+  //ellipse(playerX,playerY,playerRadius*2);
+  tint(255,playerHealth*2);
+  image(playerImage, playerX, playerY, playerRadius*2, playerRadius*2);
 }
 
 // showGameOver()
@@ -329,9 +355,9 @@ function drawPlayer() {
 function showGameOver() {
   textSize(32);
   textAlign(CENTER,CENTER);
-  fill(0);
+  fill(255);
   var gameOverText = "GAME OVER\n";
-  gameOverText += "You ate " + preyEaten + " prey\n";
+  gameOverText += "You've bitten " + preyEaten + " humans\n";
   gameOverText += "before you died."
   text(gameOverText,width/2,height/2);
 }
