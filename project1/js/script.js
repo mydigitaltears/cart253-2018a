@@ -60,6 +60,8 @@ var mySound;
 var lvlSound;
 // Boolean for bitting
 var bite = false;
+// toggle for shift at beginning
+var pressShift = false;
 
 //preload images
 function preload() {
@@ -125,6 +127,7 @@ function draw() {
     drawPrey();
     drawPlayer();
     console.log(preySpeed);
+    console.log(pressShift);
     lvl();
   }
   else {
@@ -160,8 +163,18 @@ function handleInput() {
     playerVY = 0;
   }
 
+  // Press shift advice
+  if(!pressShift){
+    textFont("Helvetica");
+    textSize(25);
+    textAlign(CENTER,CENTER);
+    noStroke();
+    fill(255,0,0);
+    text("PRESS SHIFT TO GO FASTER, BUT LOSE MORE BLOOD \n \n BITE ALL HUMANS",width/2,height/10);
+  }
   //Sprint feature
   if(keyIsDown(SHIFT)){
+    pressShift = true;
     playerVX *= 3;
     playerVY *= 3;
     playerHealth = constrain(playerHealth - (dyingSpeed*3),0,playerMaxHealth);
@@ -215,6 +228,7 @@ function checkEating() {
     if (preyHealth === 0) {
       //lvl up system every 5 prey eaten
       if((preyEaten+1)%5==0&&preyEaten>1){
+        //play lvlup sound
         lvlSound.setVolume(0.2);
         lvlSound.play();
         //lvlup random perk
@@ -373,6 +387,7 @@ function showGameOver() {
     preyMaxHealth = 100;
     preyEaten = 0;
     eatHealth = 5;
+    pressShift = false;
     setupPrey();
     setupPlayer();
   }
