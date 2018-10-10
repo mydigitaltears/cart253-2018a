@@ -56,6 +56,8 @@ var lvlup;
 var bg;
 // Sucking sound
 var mySound;
+// Lvlup sound
+var lvlSound;
 // Boolean for bitting
 var bite = false;
 
@@ -64,6 +66,7 @@ function preload() {
   playerImage = loadImage("assets/images/M.png");
   preyImage = loadImage("assets/images/H.png");
   mySound = loadSound("assets/sounds/mysound.mp3")
+  lvlSound = loadSound("assets/sounds/lvl.mp3")
 }
 // setup()
 //
@@ -212,6 +215,8 @@ function checkEating() {
     if (preyHealth === 0) {
       //lvl up system every 5 prey eaten
       if((preyEaten+1)%5==0&&preyEaten>1){
+        lvlSound.setVolume(0.2);
+        lvlSound.play();
         //lvlup random perk
         lvlup = Math.floor(Math.random()*5);
         // reduce prey max preyMaxSpeed
