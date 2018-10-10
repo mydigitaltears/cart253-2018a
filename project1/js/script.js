@@ -342,9 +342,9 @@ function movePrey() {
 function drawPrey() {
   tint(255,preyHealth*2+50);
   // Make the prey radius vary with it's health
-  preyRadius = (preyHealth/2)+30;
+  preyRadius = (preyHealth/2)+60;
   imageMode(CENTER);
-  image(preyImage, preyX, preyY, preyRadius+40, preyRadius+40);
+  image(preyImage, preyX, preyY, preyRadius+10, preyRadius+10);
 }
 
 // drawPlayer()
