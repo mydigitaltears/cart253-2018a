@@ -36,7 +36,7 @@ var t = 0;
 var leftPaddle = {
   x: 0,
   y: 0,
-  // changed paddles height, width and speed
+  // changed paddles height, width and speed. Added score
   w: 10,
   h: 100,
   vx: 0,
@@ -54,7 +54,7 @@ var leftPaddle = {
 var rightPaddle = {
   x: 0,
   y: 0,
-    // changed paddles height, width and speed
+  // changed paddles height, width and speed. Added score
   w: 10,
   h: 100,
   vx: 0,
@@ -248,7 +248,10 @@ function handleBallPaddleCollision(paddle) {
     // Then check if it is touching the paddle horizontally
     if (ballLeft < paddleRight && ballRight > paddleLeft) {
       // Then the ball is touching the paddle so reverse its vx
+      // also goes faster
       ball.vx = -1.2*ball.vx;
+      // also augment size
+      ball.size ++;
       console.log(ball.vx);
       // Play our bouncing sound effect by rewinding and then playing
       beepSFX.currentTime = 0;
@@ -289,6 +292,7 @@ function reset(){
   ball.x = width/2;
   ball.y = height/2;
   ball.vy = random(3,10);
+  ball.size = 20;
   ball.speed = -ball.speed;
   ball.vx = ball.speed;
 
