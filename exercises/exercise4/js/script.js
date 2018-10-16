@@ -26,8 +26,8 @@ var ball = {
 // How far in from the walls the paddles should be drawn on x
 
 //////// NEW ////////
-var paddleInset = 30;
-//////// END NEW ////////
+var paddleInset = 0;
+var t = 0;
 
 // LEFT PADDLE
 
@@ -36,12 +36,13 @@ var paddleInset = 30;
 var leftPaddle = {
   x: 0,
   y: 0,
-  w: 20,
-  h: 70,
+  // changed paddles height, width and speed
+  w: 10,
+  h: 100,
   vx: 0,
   vy: 0,
   score: 0,
-  speed: 5,
+  speed: 10,
   upKeyCode: 87, // The key code for W
   downKeyCode: 83 // The key code for S
 }
@@ -53,15 +54,18 @@ var leftPaddle = {
 var rightPaddle = {
   x: 0,
   y: 0,
-  w: 20,
-  h: 70,
+    // changed paddles height, width and speed
+  w: 10,
+  h: 100,
   vx: 0,
   vy: 0,
   score: 0,
-  speed: 5,
+  speed: 10,
   upKeyCode: 38, // The key code for the UP ARROW
   downKeyCode: 40 // The key code for the DOWN ARROW
 }
+
+////// END NEW ///////
 
 // A variable to hold the beep sound we will play on bouncing
 var beepSFX;
@@ -116,10 +120,14 @@ function setupBall() {
 //
 // Calls the appropriate functions to run the game
 function draw() {
-  // Fill the background
-  background(bgColor);
-  console.log(leftPaddle.score);
-  console.log(rightPaddle.score);
+
+  ////// NEW //////
+  // time variable for the sin function
+  t ++;
+  // Fill the background with a smooth sin function
+  background(Math.sin(t/100)*200+150,Math.cos(t/100)*150+150,Math.cos(t/100)*50+150);
+  ////// END NEW ///////
+
   // Handle input
   // Notice how we're using the SAME FUNCTION to handle the input
   // for the two paddles!
@@ -240,7 +248,8 @@ function handleBallPaddleCollision(paddle) {
     // Then check if it is touching the paddle horizontally
     if (ballLeft < paddleRight && ballRight > paddleLeft) {
       // Then the ball is touching the paddle so reverse its vx
-      ball.vx = -ball.vx;
+      ball.vx = -1.2*ball.vx;
+      console.log(ball.vx);
       // Play our bouncing sound effect by rewinding and then playing
       beepSFX.currentTime = 0;
       beepSFX.play();
@@ -266,29 +275,35 @@ function handleBallOffScreen() {
     // and update the player score
     rightPaddle.score ++;
     reset();
-    score();
+    scoreR();
   }
   if (ballLeft > width){
     leftPaddle.score ++;
     reset();
-    score();
+    scoreL();
   }
 }
 
 // reset function
 function reset(){
   ball.x = width/2;
-  ball.y = height/2
+  ball.y = height/2;
   ball.vy = random(3,10);
-  ball.vx = -ball.vx
+  ball.speed = -ball.speed;
+  ball.vx = ball.speed;
+
 }
 // reduce paddles height with score
-function score(){
-  if(leftPaddle.score < 8){
-    leftPaddle.h-=leftPaddle.score;
-  }
-  if(rightPaddle.score < 8){
+function scoreR(){
+  if(rightPaddle.score < 10){
     rightPaddle.h-=rightPaddle.score;
+    rightPaddle.x=rightPaddle.x-15;
+  }
+}
+function scoreL(){
+  if(leftPaddle.score < 10){
+    leftPaddle.h-=leftPaddle.score;
+    leftPaddle.x=leftPaddle.x+15;
   }
 }
 //////// END NEW ////////
@@ -297,12 +312,16 @@ function score(){
 //
 // Draws ball on screen based on its properties
 function displayBall() {
-  rect(ball.x,ball.y,ball.size,ball.size);
+  ellipse(ball.x,ball.y,ball.size,ball.size);
 }
 
 // displayPaddle(paddle)
 //
 // Draws the specified paddle on screen based on its properties
 function displayPaddle(paddle) {
+  ////// NEW //////
+  // paddle fill going reverse with the background
+  fill((Math.sin(t/100)*200)*-1,(Math.cos(t/100)*150)*-1,(Math.cos(t/100)*50)*-1);
+  ////// END NEW //////
   rect(paddle.x,paddle.y,paddle.w,paddle.h);
 }
