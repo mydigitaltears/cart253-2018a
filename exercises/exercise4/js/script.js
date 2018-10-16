@@ -37,6 +37,7 @@ var leftPaddle = {
   h: 70,
   vx: 0,
   vy: 0,
+  score: 0,
   speed: 5,
   upKeyCode: 87, // The key code for W
   downKeyCode: 83 // The key code for S
@@ -53,6 +54,7 @@ var rightPaddle = {
   h: 70,
   vx: 0,
   vy: 0,
+  score: 0,
   speed: 5,
   upKeyCode: 38, // The key code for the UP ARROW
   downKeyCode: 40 // The key code for the DOWN ARROW
@@ -113,7 +115,8 @@ function setupBall() {
 function draw() {
   // Fill the background
   background(bgColor);
-
+  console.log(leftPaddle.score);
+  console.log(rightPaddle.score);
   // Handle input
   // Notice how we're using the SAME FUNCTION to handle the input
   // for the two paddles!
@@ -253,17 +256,37 @@ function handleBallOffScreen() {
   var ballRight = ball.x + ball.size/2;
 
   // Check for ball going off the sides
-  if (ballRight < 0 || ballLeft > width) {
+  if (ballRight < 0) {
     // If it went off either side, reset it to the centre
     ball.x = width/2;
-    ball.y = height/2;
+    ball.y = height/2
+    ball.vy = random(3,10);
+    rightPaddle.score ++;
+    ball.vx = -ball.vx
+    score();
     // NOTE that we don't change its velocity here so it just
     // carries on moving with the same velocity after its
     // position is reset.
     // This is where we would count points etc!
   }
+  if (ballLeft > width){
+    ball.x = width/2;
+    ball.y = height/2;
+    ball.vy = random(3,10);
+    leftPaddle.score ++;
+    ball.vx = -ball.vx
+    score();
+  }
 }
 
+function score(){
+  if(leftPaddle.score < 8){
+    leftPaddle.h-=leftPaddle.score;
+  }
+  if(rightPaddle.score < 8){
+    rightPaddle.h-=rightPaddle.score;
+  }
+}
 // displayBall()
 //
 // Draws ball on screen based on its properties
