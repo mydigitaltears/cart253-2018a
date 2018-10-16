@@ -24,7 +24,7 @@ var ball = {
 // PADDLES
 
 // How far in from the walls the paddles should be drawn on x
-var paddleInset = 50;
+var paddleInset = 30;
 
 // LEFT PADDLE
 
