@@ -256,29 +256,30 @@ function handleBallOffScreen() {
   var ballRight = ball.x + ball.size/2;
 
   // Check for ball going off the sides
+
+  //////// NEW ////////
   if (ballRight < 0) {
-    // If it went off either side, reset it to the centre
-    ball.x = width/2;
-    ball.y = height/2
-    ball.vy = random(3,10);
+    // changed the inner function to use reset() and score()
+    // and update the player score
     rightPaddle.score ++;
-    ball.vx = -ball.vx
+    reset();
     score();
-    // NOTE that we don't change its velocity here so it just
-    // carries on moving with the same velocity after its
-    // position is reset.
-    // This is where we would count points etc!
   }
   if (ballLeft > width){
-    ball.x = width/2;
-    ball.y = height/2;
-    ball.vy = random(3,10);
     leftPaddle.score ++;
-    ball.vx = -ball.vx
+    reset();
     score();
   }
 }
 
+// reset function
+function reset(){
+  ball.x = width/2;
+  ball.y = height/2
+  ball.vy = random(3,10);
+  ball.vx = -ball.vx
+}
+// reduce paddles height with score
 function score(){
   if(leftPaddle.score < 8){
     leftPaddle.h-=leftPaddle.score;
@@ -287,6 +288,8 @@ function score(){
     rightPaddle.h-=rightPaddle.score;
   }
 }
+//////// END NEW ////////
+
 // displayBall()
 //
 // Draws ball on screen based on its properties
