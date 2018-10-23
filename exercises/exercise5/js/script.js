@@ -14,6 +14,7 @@ var ball;
 var leftPaddle;
 var rightPaddle;
 //////// NEW ////////
+// t variable for the sin background function
 var t = 0;
 //////// END NEW ////////
 // setup()
