@@ -48,5 +48,5 @@ Paddle.prototype.update = function() {
 ////// FIXED ////// (changed "disploy" to "display" and removed a ")" after function)
 Paddle.prototype.display = function() {
   ////// Fixed ////// (changed "rectangle" to "rect")
-  rectangle(this.x,this.y,this.w,this.h);
+  rect(this.x,this.y,this.w,this.h);
 }
