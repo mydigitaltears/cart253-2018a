@@ -54,12 +54,10 @@ function draw() {
   ////// NEW //////
   //Changed in the draw because this script uses ball method and changes paddles data
   if (ball.isOffScreen() && ball.vx > 0) {
-    console.log(leftPaddle.score);
     leftPaddle.scored();
     ball.reset();
   }
   else if (ball.isOffScreen() && ball.vx < 0) {
-    console.log(rightPaddle.score);
     rightPaddle.scored();
     ball.reset();
   }

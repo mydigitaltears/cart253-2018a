@@ -52,10 +52,14 @@ Paddle.prototype.update = function() {
 //
 // Draw the paddle as a rectangle on the screen
 Paddle.prototype.display = function() {
-  fill(255);
+  ////// NEW //////
+  fill((Math.sin(t/100)*200)*-1,(Math.cos(t/100)*150)*-1,(Math.cos(t/100)*50)*-1);
+  ////// END NEW //////
   rect(this.x,this.y,this.w,this.h);
 }
 
+////// NEW //////
+// scored() function that change the height and inset of paddles
 Paddle.prototype.scored = function() {
   this.score ++;
   this.pInset ++;
@@ -69,3 +73,4 @@ Paddle.prototype.scored = function() {
     }
   }
 }
+////// END NEW //////
