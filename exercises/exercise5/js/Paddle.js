@@ -53,3 +53,9 @@ Paddle.prototype.display = function() {
   fill(255);
   rect(this.x,this.y,this.w,this.h);
 }
+
+Paddle.prototype.scored = function() {
+  if (this.score < 10){
+    this.h-=this.score;
+  }
+}

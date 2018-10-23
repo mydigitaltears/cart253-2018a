@@ -45,7 +45,6 @@ function draw() {
   // Fill the background with a smooth sin function
   background(Math.sin(t/100)*200+150,Math.cos(t/100)*150+150,Math.cos(t/100)*50+150);
   ////// END NEW ///////
-
   leftPaddle.handleInput();
   rightPaddle.handleInput();
 
@@ -53,9 +52,21 @@ function draw() {
   leftPaddle.update();
   rightPaddle.update();
 
-  if (ball.isOffScreen()) {
+  ////// NEW //////
+  //Changed in the draw because this script uses ball method and changes paddles data
+  if (ball.isOffScreen() && ball.vx > 0) {
+    leftPaddle.score ++;
+    console.log(leftPaddle.score);
+    leftPaddle.scored();
     ball.reset();
   }
+  else if (ball.isOffScreen() && ball.vx < 0) {
+    rightPaddle.score ++;
+    console.log(rightPaddle.score);
+    rightPaddle.scored();
+    ball.reset();
+  }
+  ////// END NEW //////
 
   ball.handleCollision(leftPaddle);
   ball.handleCollision(rightPaddle);
