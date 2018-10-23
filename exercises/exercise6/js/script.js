@@ -21,7 +21,8 @@ var rightPaddle;
 function setup() {
   ////// Fixed ////// (changed "crateCanvas" to "createCanvas")
   createCanvas(640,480);
-  noStroke();
+  ////// Fixed ////// (removed the "noStroke()" to see the objects)
+  //noStroke();
   // Create a ball
   ball = new Ball(width/2,height/2,50,50,10,50);
   // Create the right paddle with UP and DOWN as controls
