@@ -53,5 +53,6 @@ function draw() {
 
   ball.display();
   leftPaddle.display();
-  rightPaddle.display(;
+  ////// Fixed ////// (added a ")")
+  rightPaddle.display();
 }
