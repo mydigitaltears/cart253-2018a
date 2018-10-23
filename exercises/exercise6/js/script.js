@@ -32,8 +32,8 @@ function setup() {
   // Keycodes 83 and 87 are W and S respectively
   ////// Fixed ////// (added a ")" at the end)
   leftPaddle = new Paddle(0,height/2,10,100,10,83,87);
-
-
+////// Fixed ////// (added a "}" to end the setup)
+}
 // draw()
 //
 // Handles input, updates all the elements, checks for collisions
