@@ -48,8 +48,8 @@ function draw() {
   leftPaddle.update();
   rightPaddle.update();
 
-  ////// Fixed ////// (added a "}" to start the if statement)
-  if (ball.isOffTheScreen()) {
+  ////// Fixed ////// (added a "}" to start the if statement and changed "isOffTheScreen" to "isOffScreen")
+  if (ball.isOffScreen()) {
   ////// Fixed ////// (added "ball")
     ball.reset();
   }
