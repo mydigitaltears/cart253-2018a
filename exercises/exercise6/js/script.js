@@ -24,7 +24,8 @@ function setup() {
   ////// Fixed ////// (removed the "noStroke()" to see the objects)
   //noStroke();
   // Create a ball
-  ball = new Ball(width/2,height/2,50,50,10,50);
+  ////// Fixed ////// (changed the speed, vx and vy to 5)
+  ball = new Ball(width/2,height/2,5,5,10,5);
   // Create the right paddle with UP and DOWN as controls
   ////// Fixed ////// (put both paddles height to 100)
   rightPaddle = new Paddle(width-10,height/2,10,100,10,UP_ARROW,DOWN_ARROW);
