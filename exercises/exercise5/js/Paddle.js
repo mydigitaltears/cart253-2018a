@@ -6,7 +6,7 @@
 // Paddle constructor
 //
 // Sets the properties with the provided arguments or defaults
-function Paddle(x,y,w,h,speed,downKey,upKey,score) {
+function Paddle(x,y,w,h,speed,downKey,upKey,score,pInset) {
   this.x = x;
   this.y = y;
   this.vx = 0;
@@ -18,7 +18,9 @@ function Paddle(x,y,w,h,speed,downKey,upKey,score) {
   this.upKey = upKey;
   //////// NEW ////////
   // added score
-  this.score= score;
+  this.score = score;
+  // added paddle inset
+  this.pInset = pInset;
   //////// END NEW ////////
 }
 
@@ -55,6 +57,8 @@ Paddle.prototype.display = function() {
 }
 
 Paddle.prototype.scored = function() {
+  this.score ++;
+  this.pInset ++;
   if (this.score < 10){
     this.h-=this.score;
   }

@@ -14,7 +14,6 @@ var ball;
 var leftPaddle;
 var rightPaddle;
 //////// NEW ////////
-var paddleInset = 0;
 var t = 0;
 //////// END NEW ////////
 // setup()
@@ -27,10 +26,10 @@ function setup() {
   // Create the right paddle with UP and DOWN as controls
   //////// NEW ////////
   // changed paddles height, added score as 0
-  rightPaddle = new Paddle(width-10,height/2,10,100,10,DOWN_ARROW,UP_ARROW,0);
+  rightPaddle = new Paddle(width-10,height/2,10,100,10,DOWN_ARROW,UP_ARROW,0,0);
   // Create the left paddle with W and S as controls
   // Keycodes 83 and 87 are W and S respectively
-  leftPaddle = new Paddle(0,height/2,10,100,10,83,87,0);
+  leftPaddle = new Paddle(0,height/2,10,100,10,83,87,0,0);
   //////// END NEW ////////
 }
 
@@ -55,15 +54,15 @@ function draw() {
   ////// NEW //////
   //Changed in the draw because this script uses ball method and changes paddles data
   if (ball.isOffScreen() && ball.vx > 0) {
-    leftPaddle.score ++;
     console.log(leftPaddle.score);
     leftPaddle.scored();
+    leftPaddle.x += leftPaddle.pInset;
     ball.reset();
   }
   else if (ball.isOffScreen() && ball.vx < 0) {
-    rightPaddle.score ++;
     console.log(rightPaddle.score);
     rightPaddle.scored();
+    rightPaddle.x -= rightPaddle.pInset;
     ball.reset();
   }
   ////// END NEW //////
