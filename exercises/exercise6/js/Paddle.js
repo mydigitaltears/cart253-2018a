@@ -49,6 +49,8 @@ Paddle.prototype.update = function() {
 // Draw the paddle as a rectangle on the screen
 ////// FIXED ////// (changed "disploy" to "display" and removed a ")" after function)
 Paddle.prototype.display = function() {
+  ////// Fixed ////// (added a fill)
+  fill(255);
   ////// Fixed ////// (changed "rectangle" to "rect")
   rect(this.x,this.y,this.w,this.h);
 }
