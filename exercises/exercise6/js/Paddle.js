@@ -4,8 +4,8 @@
 // to specify the input keys to move it up and down
 ////// Fixed ////// (line should be in comment, added "//")
 //Paddle constructor
-
-Sets the properties with the provided arguments or defaults
+////// Fixed ////// (same as above, added "//")
+//Sets the properties with the provided arguments or defaults
 function Pladdle(x,y,w,h,speed,downKey,upKey) {
   this.x = x;
   this.y = y;
