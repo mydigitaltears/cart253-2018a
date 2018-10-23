@@ -24,7 +24,8 @@ function Ball(x,y,vx,vy,size,speed) {
 //////// FIXED //////// ("faction" to "function")
 Ball.prototype.updated = function () {
   // Update position with velocity
-  this.x = this.vx;
+  ////// Fixed ////// (added a "+")
+  this.x += this.vx;
   this.y += this.vy;
 
   // Constrain y position to be on screen
