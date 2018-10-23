@@ -10,7 +10,8 @@
 // Written with JavaScript OOP.
 
 // Variable to contain the objects representing our ball and paddles
-var bal;
+////// Fixed ////// (changed "bal" to "ball")
+var ball;
 var leftPaddle;
 var rightPaddle;
 
