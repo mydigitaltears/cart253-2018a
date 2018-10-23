@@ -61,5 +61,11 @@ Paddle.prototype.scored = function() {
   this.pInset ++;
   if (this.score < 10){
     this.h-=this.score;
+    if(this.x < 320){
+      this.x += this.pInset;
+    }
+    else if (this.x > 320){
+      this.x -= this.pInset;
+    }
   }
 }

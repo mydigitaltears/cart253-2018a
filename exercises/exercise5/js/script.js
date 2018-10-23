@@ -56,13 +56,11 @@ function draw() {
   if (ball.isOffScreen() && ball.vx > 0) {
     console.log(leftPaddle.score);
     leftPaddle.scored();
-    leftPaddle.x += leftPaddle.pInset;
     ball.reset();
   }
   else if (ball.isOffScreen() && ball.vx < 0) {
     console.log(rightPaddle.score);
     rightPaddle.scored();
-    rightPaddle.x -= rightPaddle.pInset;
     ball.reset();
   }
   ////// END NEW //////
