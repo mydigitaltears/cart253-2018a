@@ -13,6 +13,7 @@
 var ball;
 var leftPaddle;
 var rightPaddle;
+var title = true;
 
 // setup()
 //
@@ -33,23 +34,37 @@ function setup() {
 // Handles input, updates all the elements, checks for collisions
 // and displays everything.
 function draw() {
-  background(0);
-
-  leftPaddle.handleInput();
-  rightPaddle.handleInput();
-
-  ball.update();
-  leftPaddle.update();
-  rightPaddle.update();
-
-  if (ball.isOffScreen()) {
-    ball.reset();
+  if (title){
+    background(0);
+    textSize(30);
+    text('PONG', width/2, height/2);
+    textSize(20);
+    text('press "enter" to start', width/2, height/1.5);
+    textAlign(CENTER);
+    fill(255);
+    if (keyCode === ENTER){
+      title = false;
+    }
   }
+  else {
+    background(0);
 
-  ball.handleCollision(leftPaddle);
-  ball.handleCollision(rightPaddle);
+    leftPaddle.handleInput();
+    rightPaddle.handleInput();
 
-  ball.display();
-  leftPaddle.display();
-  rightPaddle.display();
+    ball.update();
+    leftPaddle.update();
+    rightPaddle.update();
+
+    if (ball.isOffScreen()) {
+      ball.reset();
+    }
+
+    ball.handleCollision(leftPaddle);
+    ball.handleCollision(rightPaddle);
+
+    ball.display();
+    leftPaddle.display();
+    rightPaddle.display();
+  }
 }
