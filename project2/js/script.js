@@ -103,6 +103,8 @@ function draw() {
     }
     ////// END NEW //////
     if (t>100 && notimeoutl && notimeoutr){
+      rightPaddle.unslowed();
+      leftPaddle.unslowed();
       badball.update();
       badball.display();
       badball.isOffScreen();
@@ -111,21 +113,21 @@ function draw() {
         notimeoutl = false;
         ball.reset();
         badball.reset();
-        setTimeout(function(){notimeoutl = true}, 2000);
+        setTimeout(function(){notimeoutl = true}, 5000);
     }
     if(badball.handleCollision(rightPaddle)){
         notimeoutr = false;
         ball.reset();
         badball.reset();
-        setTimeout(function(){notimeoutr = true}, 2000);
+        setTimeout(function(){notimeoutr = true}, 5000);
     }
     if(!notimeoutl){
-      fill(255);
       text('Oups, left player is slowing down!', width/2, height/3);
+      leftPaddle.slowed();
     }
     if(!notimeoutr){
-      fill(255);
       text('Oups, right player is slowing down!', width/2, height/3);
+      rightPaddle.slowed();
     }
   }
   ////// NEW //////

@@ -78,4 +78,12 @@ Paddle.prototype.scored = function() {
     }
   }
 }
+
+Paddle.prototype.slowed = function () {
+  this.speed = 6;
+}
+
+Paddle.prototype.unslowed = function () {
+  this.speed = 10;
+}
 ////// END NEW //////
