@@ -6,7 +6,7 @@
 // Paddle constructor
 //
 // Sets the properties with the provided arguments or defaults
-function Paddle(x,y,w,h,speed,downKey,upKey) {
+function Paddle(x,y,w,h,speed,downKey,upKey,score,pInset) {
   this.x = x;
   this.y = y;
   this.vx = 0;
@@ -16,6 +16,12 @@ function Paddle(x,y,w,h,speed,downKey,upKey) {
   this.speed = speed;
   this.downKey = downKey;
   this.upKey = upKey;
+  //////// NEW ////////
+  // added score
+  this.score = score;
+  // added paddle inset
+  this.pInset = pInset;
+  //////// END NEW ////////
 }
 
 // handleInput()
@@ -46,6 +52,30 @@ Paddle.prototype.update = function() {
 //
 // Draw the paddle as a rectangle on the screen
 Paddle.prototype.display = function() {
-  fill(255);
+  ////// NEW //////
+  // fill that goes in reverse with the background
+  fill((Math.sin(t/100)*200)*-1,(Math.cos(t/100)*150)*-1,(Math.cos(t/100)*50)*-1);
+  ////// END NEW //////
   rect(this.x,this.y,this.w,this.h);
 }
+
+////// NEW //////
+// scored() function that change the height and inset of paddles
+Paddle.prototype.scored = function() {
+  // augment score
+  this.score ++;
+  if (this.score < 10){
+    // reduce paddle height up to a max
+    this.h-=this.score;
+    // augment inset
+    this.pInset ++;
+    // if statement to differenciate left and right paddle (for inset)
+    if(this.x < 320){
+      this.x += this.pInset;
+    }
+    else if (this.x > 320){
+      this.x -= this.pInset;
+    }
+  }
+}
+////// END NEW //////

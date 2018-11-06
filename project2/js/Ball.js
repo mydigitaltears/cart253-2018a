@@ -70,7 +70,13 @@ Ball.prototype.handleCollision = function(paddle) {
       this.x -= this.vx;
       this.y -= this.vy;
       // Reverse x velocity to bounce
-      this.vx = -this.vx;
+      ////// NEW //////
+      // ball goes faster with each colisions
+      this.speed = -this.speed;
+      this.vx = -1.2*this.vx;
+      // ball also augment size;
+      this.size ++;
+      ////// END NEW ///////
     }
   }
 }
@@ -81,4 +87,13 @@ Ball.prototype.handleCollision = function(paddle) {
 Ball.prototype.reset = function () {
   this.x = width/2;
   this.y = height/2;
+  ////// NEW //////
+  // random vy on reset
+  this.vy = random(3,10);
+  // reset size
+  this.size = 10;
+  // reset vx speed
+  this.speed = -this.speed;
+  this.vx = this.speed;
+  ////// END NEW //////
 }
