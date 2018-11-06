@@ -42,6 +42,8 @@ function setup() {
 // Handles input, updates all the elements, checks for collisions
 // and displays everything.
 function draw() {
+  ////// NEW //////
+  // title screen
   if (title){
     background(0);
     textSize(30);
@@ -54,6 +56,7 @@ function draw() {
       title = false;
     }
   }
+  ////// END NEW //////
   else if (gameover === false){
     ////// NEW //////
     // time variable for the sin function
@@ -88,11 +91,16 @@ function draw() {
     leftPaddle.display();
     rightPaddle.display();
 
+    ////// NEW //////
+    // maximum score for ending screen
     if(leftPaddle.score > 0 || rightPaddle.score > 0){
       gameover = true;
       console.log(gameover);
     }
+    ////// END NEW //////
   }
+  ////// NEW //////
+  // ending screen
   else if(gameover){
     background(0);
     textSize(30);
@@ -107,4 +115,5 @@ function draw() {
       console.log(gameover);
     }
   }
+  ////// END NEW //////
 }
