@@ -23,6 +23,86 @@ BadBall.prototype.update = function () {
 
   // Check for touching upper or lower edge and reverse velocity if so
   if (this.y === 0 || this.y + this.size === height) {
-    this.vy = -this.vy;
+    this.vx = this.vx;
+    if (Math.abs(this.vy) < 4 ){
+      this.vy = -this.vy*random(1,2);
+      console.log(this.vy+"f1");
+    }
+    else if (Math.abs(this.vy) > 6){
+      this.vy = -this.vy*random(0.5,1);
+      console.log(this.vy+"f2");
+    }
+    else {
+      this.vy = -this.vy*random(0.5,1.5);
+      console.log(this.vy+"f3");
+    }
   }
 }
+
+
+// isOffScreen()
+//
+// Checks if the Badball has moved off the screen and, if so, returns true.
+// Otherwise it returns false.
+BadBall.prototype.isOffScreen = function () {
+  // Check for going off screen and reset if so
+  if (this.x + this.size < 0) {
+    this.x = width;
+  }
+  else if (this.x > width){
+    this.x = 0;
+  }
+}
+
+// display()
+//
+// Draw the Badball as a rectangle on the screen
+BadBall.prototype.display = function () {
+  fill(255,0,0);
+  ellipse(this.x,this.y,this.size,this.size);
+}
+
+// handleCollision(paddle)
+//
+// Check if this Badball overlaps the paddle passed as an argument
+// and if so reverse x velocity to bounce
+BadBall.prototype.handleCollision = function(paddle) {
+  // Check if the Badball overlaps the paddle on x axis
+  if (this.x + this.size > paddle.x && this.x < paddle.x + paddle.w) {
+    // Check if the Badball overlaps the paddle on y axis
+    if (this.y + this.size > paddle.y && this.y < paddle.y + paddle.h) {
+      // If so, move Badball back to previous position (by subtracting current velocity)
+      return true;
+      this.x = width/2;
+      this.y = height/2;
+      // Reverse x velocity to bounce
+      ////// NEW //////
+      // Badball goes faster with each colisions
+      this.vx = -this.vx;
+      if (paddle.speed > 5){
+        paddle.speed=paddle.speed-1;
+        console.log(paddle.speed);
+      }
+    }
+  }
+  else {
+    return false;
+  }
+}
+
+// reset()
+//
+// Set position back to the middle of the screen
+// BadBall.prototype.reset = function () {
+//   this.x = width/2;
+//   this.y = height/2;
+//   ////// NEW //////
+//   // random vy on reset
+//   this.vy = random(3,10);
+//   // reset size
+//   this.size = 10;
+//   // reset vx speed
+//   this.speed = -this.speed;
+//   this.vx = this.speed;
+//   ////// END NEW //////
+// }
