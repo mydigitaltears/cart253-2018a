@@ -47,14 +47,14 @@ function draw() {
     textSize(30);
     text('PONG', width/2, height/2);
     textSize(20);
-    text('press "enter" to start', width/2, height/1.5);
+    text('press the mouse to start', width/2, height/1.5);
     textAlign(CENTER);
     fill(255);
-    if (keyCode === ENTER){
+    if (mouseIsPressed){
       title = false;
     }
   }
-  else {
+  else if (gameover === false){
     ////// NEW //////
     // time variable for the sin function
     t ++;
@@ -87,5 +87,24 @@ function draw() {
     ball.display();
     leftPaddle.display();
     rightPaddle.display();
+
+    if(leftPaddle.score > 0 || rightPaddle.score > 0){
+      gameover = true;
+      console.log(gameover);
+    }
+  }
+  else if(gameover){
+    background(0);
+    textSize(30);
+    text('GAME OVER', width/2, height/2);
+    textSize(20);
+    text('press the mouse to restart', width/2, height/1.5);
+    textAlign(CENTER);
+    fill(255);
+    if (mouseIsPressed){
+      gameover = false;
+      setup();
+      console.log(gameover);
+    }
   }
 }
