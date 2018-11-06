@@ -73,16 +73,14 @@ BadBall.prototype.handleCollision = function(paddle) {
     if (this.y + this.size > paddle.y && this.y < paddle.y + paddle.h) {
       // If so, move Badball back to previous position (by subtracting current velocity)
       return true;
-      this.x = width/2;
-      this.y = height/2;
       // Reverse x velocity to bounce
       ////// NEW //////
       // Badball goes faster with each colisions
-      this.vx = -this.vx;
-      if (paddle.speed > 5){
-        paddle.speed=paddle.speed-1;
-        console.log(paddle.speed);
-      }
+      // this.vx = -this.vx;
+      // if (paddle.speed > 5){
+      //   paddle.speed=paddle.speed-1;
+      //   console.log(paddle.speed);
+      //}
     }
   }
   else {
@@ -93,16 +91,12 @@ BadBall.prototype.handleCollision = function(paddle) {
 // reset()
 //
 // Set position back to the middle of the screen
-// BadBall.prototype.reset = function () {
-//   this.x = width/2;
-//   this.y = height/2;
-//   ////// NEW //////
-//   // random vy on reset
-//   this.vy = random(3,10);
-//   // reset size
-//   this.size = 10;
-//   // reset vx speed
-//   this.speed = -this.speed;
-//   this.vx = this.speed;
-//   ////// END NEW //////
-// }
+BadBall.prototype.reset = function () {
+  setTimeout(this.display,1000);
+  setTimeout(this.update,1000);
+  this.x = width/2;
+  this.y = height/2;
+  // reset vx speed
+  this.speed = -this.speed;
+  this.vx = this.speed;
+}

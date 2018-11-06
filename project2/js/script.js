@@ -19,6 +19,8 @@ var title = true;
 var gameover = false;
 // t variable for the sin background function
 var t = 0;
+var notimeoutl = true;
+var notimeoutr = true;
 ////// END NEW ///////
 
 // setup()
@@ -36,7 +38,7 @@ function setup() {
   // Keycodes 83 and 87 are W and S respectively
   leftPaddle = new Paddle(0,height/2,10,100,10,83,87,0,0);
   //////// END NEW ////////
-  badball = new BadBall(width/3,height/3,3,5,15,5);
+  badball = new BadBall(width/2,height/2,3,5,15,5);
 }
 
 // draw()
@@ -100,20 +102,30 @@ function draw() {
       console.log(gameover);
     }
     ////// END NEW //////
-    badball.update();
-    badball.display();
-    badball.isOffScreen();
-    badball.handleCollision(leftPaddle);
-    badball.handleCollision(rightPaddle);
+    if (t>100 && notimeoutl && notimeoutr){
+      badball.update();
+      badball.display();
+      badball.isOffScreen();
+    }
     if(badball.handleCollision(leftPaddle)){
-      for(var i = 0; i<10; i++){
-        background(255,0,0);
-      }
+        notimeoutl = false;
+        ball.reset();
+        badball.reset();
+        setTimeout(function(){notimeoutl = true}, 2000);
     }
     if(badball.handleCollision(rightPaddle)){
-      for(var i = 0; i<10; i++){
-        background(255,0,0);
-      }
+        notimeoutr = false;
+        ball.reset();
+        badball.reset();
+        setTimeout(function(){notimeoutr = true}, 2000);
+    }
+    if(!notimeoutl){
+      fill(255);
+      text('Oups, left player is slowing down!', width/2, height/3);
+    }
+    if(!notimeoutr){
+      fill(255);
+      text('Oups, right player is slowing down!', width/2, height/3);
     }
   }
   ////// NEW //////
