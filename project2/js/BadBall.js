@@ -1,3 +1,4 @@
+////// NEW //////
 // BadBall
 
 // BadBall constructor
@@ -23,13 +24,18 @@ BadBall.prototype.update = function () {
 
   // Check for touching upper or lower edge and reverse velocity if so
   if (this.y === 0 || this.y + this.size === height) {
-    this.vx = this.vx;
-    if (Math.abs(this.vy) < 4 ){
-      this.vy = -this.vy*random(1,2);
+    // while loop so the ball doesn't go straight up
+    while(Math.abs(this.vx)<0.5){
+      // vx go random from -2 to 2 so the ball can go behind
+      this.vx = this.vx*random(-2,2)
+    }
+    // this is to put some kind of random bounce on the badballs without it going go fast or too slow
+    if (Math.abs(this.vy) < 1 ){
+      this.vy = -this.vy*random(2,3);
       console.log(this.vy+"f1");
     }
-    else if (Math.abs(this.vy) > 6){
-      this.vy = -this.vy*random(0.5,1);
+    else if (Math.abs(this.vy) > 2){
+      this.vy = -this.vy*random(0.2,0.5);
       console.log(this.vy+"f2");
     }
     else {
@@ -46,6 +52,7 @@ BadBall.prototype.update = function () {
 // Otherwise it returns false.
 BadBall.prototype.isOffScreen = function () {
   // Check for going off screen and reset if so
+  // when the badball is off screen it goes to the other side
   if (this.x + this.size < 0) {
     this.x = width;
   }
@@ -66,6 +73,7 @@ BadBall.prototype.display = function () {
 //
 // Check if this Badball overlaps the paddle passed as an argument
 // and if so reverse x velocity to bounce
+// I puted a boolean trigger for the collision so it works like the ballOffscreen function
 BadBall.prototype.handleCollision = function(paddle) {
   // Check if the Badball overlaps the paddle on x axis
   if (this.x + this.size > paddle.x && this.x < paddle.x + paddle.w) {
@@ -80,6 +88,7 @@ BadBall.prototype.handleCollision = function(paddle) {
   }
 }
 
+// middle wall collision so the badball bounce on the middle wall
 BadBall.prototype.middleWallCollision = function(middlewall) {
   if (this.x + this.size > middlewall.x && this.x < middlewall.x + middlewall.w) {
     // Check if the Badball overlaps the paddle on y axis
@@ -101,3 +110,4 @@ BadBall.prototype.reset = function () {
   this.speed = -this.speed;
   this.vx = this.speed;
 }
+////// END NEW //////

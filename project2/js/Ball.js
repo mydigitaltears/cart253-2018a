@@ -70,9 +70,7 @@ Ball.prototype.handleCollision = function(paddle) {
       this.x -= this.vx;
       this.y -= this.vy;
       // Reverse x velocity to bounce
-      ////// NEW //////
       this.vx = -this.vx;
-      ////// END NEW ///////
     }
   }
 }
@@ -82,8 +80,9 @@ Ball.prototype.handleCollision = function(paddle) {
 // Set position back to the middle of the screen
 Ball.prototype.reset = function () {
   this.x = width/2;
-  this.y = height;
   ////// NEW //////
+  // ball resets at buttom, I think it's better
+  this.y = height;
   // random vy on reset
   this.vy = random(3,10);
   // reset size

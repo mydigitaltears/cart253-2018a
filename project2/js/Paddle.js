@@ -67,11 +67,11 @@ Paddle.prototype.scored = function() {
     this.h-=this.score;
   }
 }
-
+// slowed function, reduce the speed
 Paddle.prototype.slowed = function () {
   this.speed = 6;
 }
-
+// unslowed function, puts the speed back to normal
 Paddle.prototype.unslowed = function () {
   this.speed = 10;
 }
