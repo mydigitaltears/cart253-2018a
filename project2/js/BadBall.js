@@ -95,8 +95,6 @@ BadBall.prototype.middleWallCollision = function(middlewall) {
 //
 // Set position back to the middle of the screen
 BadBall.prototype.reset = function () {
-  setTimeout(this.display,1000);
-  setTimeout(this.update,1000);
   this.x = width/2;
   this.y = height/2;
   // reset vx speed

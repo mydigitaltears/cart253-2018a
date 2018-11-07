@@ -59,7 +59,10 @@ function draw() {
     textSize(30);
     text('PONG', width/2, height/2);
     textSize(20);
-    text('press the mouse to start', width/2, height/1.5);
+    text('Hit the white square and evade the red balls', width/2, height/1.6);
+    text('Controls --> Left Player: "w" and "s", Right Player: "up" and "down"', width/2, height/1.4);
+    text('The first player who scores 11 points wins!', width/2, height/1.3);
+    text('press the mouse to start', width/2, height/1.1);
     textAlign(CENTER);
     fill(255);
     if (mouseIsPressed){
@@ -139,8 +142,9 @@ function draw() {
         badballs[i].middleWallCollision(middlewall);
         if(badballs[i].handleCollision(leftPaddle)){
             badballtimeoutl = true;
-            ball.reset();
-            badballs[i].reset();
+            for(var j = 0; j<badballs.length; j++){
+              badballs[j].reset();
+            }
             if(badballs.length < 3){
               badballs.push( new BadBall(width/2,height/2,1,1,15,1));
             }
@@ -148,8 +152,9 @@ function draw() {
         }
         if(badballs[i].handleCollision(rightPaddle)){
             badballtimeoutr = true;
-            ball.reset();
-            badballs[i].reset();
+            for(var j = 0; j<badballs.length; j++){
+              badballs[j].reset();
+            }
             if(badballs.length < 3){
               badballs.push( new BadBall(width/2,height/2,1,1,15,1));
             }
