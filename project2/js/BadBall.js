@@ -73,18 +73,21 @@ BadBall.prototype.handleCollision = function(paddle) {
     if (this.y + this.size > paddle.y && this.y < paddle.y + paddle.h) {
       // If so, move Badball back to previous position (by subtracting current velocity)
       return true;
-      // Reverse x velocity to bounce
-      ////// NEW //////
-      // Badball goes faster with each colisions
-      // this.vx = -this.vx;
-      // if (paddle.speed > 5){
-      //   paddle.speed=paddle.speed-1;
-      //   console.log(paddle.speed);
-      //}
     }
   }
   else {
     return false;
+  }
+}
+
+BadBall.prototype.middleWallCollision = function(middlewall) {
+  if (this.x + this.size > middlewall.x && this.x < middlewall.x + middlewall.w) {
+    // Check if the Badball overlaps the paddle on y axis
+    if (this.y + this.size > middlewall.y && this.y < middlewall.y + middlewall.h) {
+      this.x -= this.vx;
+      this.y -= this.vy;
+      this.vx = -this.vx;
+    }
   }
 }
 

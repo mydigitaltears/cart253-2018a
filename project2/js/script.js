@@ -13,14 +13,17 @@
 var ball;
 var leftPaddle;
 var rightPaddle;
-var badball;
+var badballs = [];
+var middlewall;
 ////// NEW //////
 var title = true;
 var gameover = false;
 // t variable for the sin background function
 var t = 0;
-var notimeoutl = true;
-var notimeoutr = true;
+var badballtimeoutl = false;
+var badballtimeoutr = false;
+var scoredtimeoutr = false;
+var scoredtimeoutl = false;
 ////// END NEW ///////
 
 // setup()
@@ -33,12 +36,15 @@ function setup() {
   // Create the right paddle with UP and DOWN as controls
   //////// NEW ////////
   // changed paddles height, added score as 0
-  rightPaddle = new Paddle(width-10,height/2,10,100,10,DOWN_ARROW,UP_ARROW,0,0);
+  rightPaddle = new Paddle(width-10,height/2,10,100,10,DOWN_ARROW,UP_ARROW,0);
   // Create the left paddle with W and S as controls
   // Keycodes 83 and 87 are W and S respectively
-  leftPaddle = new Paddle(0,height/2,10,100,10,83,87,0,0);
+  leftPaddle = new Paddle(0,height/2,10,100,10,83,87,0);
   //////// END NEW ////////
-  badball = new BadBall(width/2,height/2,3,5,15,5);
+  badballs.push( new BadBall(width/2,height/2,1,1,15,1));
+  middlewall = new MiddleWall(width/2,height/2,10,100,5);
+  textSize(20);
+  textAlign(CENTER);
 }
 
 // draw()
@@ -72,61 +78,94 @@ function draw() {
     leftPaddle.handleInput();
     rightPaddle.handleInput();
 
-    ball.update();
+
     leftPaddle.update();
     rightPaddle.update();
 
     ////// NEW //////
     //Changed in the draw because this script uses ball method and changes paddles data
-    if (ball.isOffScreen() && ball.vx > 0) {
-      leftPaddle.scored();
-      ball.reset();
-    }
-    else if (ball.isOffScreen() && ball.vx < 0) {
-      rightPaddle.scored();
-      ball.reset();
-    }
+
     ////// END NEW //////
 
-    ball.handleCollision(leftPaddle);
-    ball.handleCollision(rightPaddle);
 
-    ball.display();
     leftPaddle.display();
     rightPaddle.display();
 
+    middlewall.display();
+    middlewall.update();
+
     ////// NEW //////
     // maximum score for ending screen
-    if(leftPaddle.score > 10 || rightPaddle.score > 10){
+    if(leftPaddle.score > 5 || rightPaddle.score > 5){
       gameover = true;
       console.log(gameover);
     }
-    ////// END NEW //////
-    if (t>100 && notimeoutl && notimeoutr){
+
+    if(t>50 && !scoredtimeoutl && !scoredtimeoutr){
+      ball.update();
+      ball.display();
+      ball.handleCollision(leftPaddle);
+      ball.handleCollision(rightPaddle);
+      ball.handleCollision(middlewall);
+    }
+    if (ball.isOffScreen() && ball.vx > 0) {
+      scoredtimeoutl = true;
+      leftPaddle.scored();
+      ball.reset();
+      setTimeout(function(){scoredtimeoutl=false},3000);
+    }
+    else if (ball.isOffScreen() && ball.vx < 0) {
+      scoredtimeoutr = true;
+      rightPaddle.scored();
+      ball.reset();
+      setTimeout(function(){scoredtimeoutr=false},3000);
+    }
+    if(scoredtimeoutl){
+      fill((Math.sin(t/100)*200)*-1,(Math.cos(t/100)*150)*-1,(Math.cos(t/100)*50)*-1);
+      text('LEFT PLAYER SCORE: '+leftPaddle.score+' ', width/2, height/1.1);
+    }
+    if(scoredtimeoutr){
+      fill((Math.sin(t/100)*200)*-1,(Math.cos(t/100)*150)*-1,(Math.cos(t/100)*50)*-1);
+      text('RIGHT PLAYER SCORE: '+rightPaddle.score, width/2, height/1.1);
+    }
+
+    if (t>100 && !badballtimeoutl && !badballtimeoutr){
       rightPaddle.unslowed();
       leftPaddle.unslowed();
-      badball.update();
-      badball.display();
-      badball.isOffScreen();
+      for(var i = 0; i<badballs.length; i++){
+        badballs[i].update();
+        badballs[i].display();
+        badballs[i].isOffScreen();
+        badballs[i].middleWallCollision(middlewall);
+        if(badballs[i].handleCollision(leftPaddle)){
+            badballtimeoutl = true;
+            ball.reset();
+            badballs[i].reset();
+            if(badballs.length < 3){
+              badballs.push( new BadBall(width/2,height/2,1,1,15,1));
+            }
+            setTimeout(function(){badballtimeoutl = false}, 5000);
+        }
+        if(badballs[i].handleCollision(rightPaddle)){
+            badballtimeoutr = true;
+            ball.reset();
+            badballs[i].reset();
+            if(badballs.length < 3){
+              badballs.push( new BadBall(width/2,height/2,1,1,15,1));
+            }
+            setTimeout(function(){badballtimeoutr = false}, 5000);
+        }
+      }
     }
-    if(badball.handleCollision(leftPaddle)){
-        notimeoutl = false;
-        ball.reset();
-        badball.reset();
-        setTimeout(function(){notimeoutl = true}, 5000);
-    }
-    if(badball.handleCollision(rightPaddle)){
-        notimeoutr = false;
-        ball.reset();
-        badball.reset();
-        setTimeout(function(){notimeoutr = true}, 5000);
-    }
-    if(!notimeoutl){
-      text('Oups, left player is slowing down!', width/2, height/3);
+
+    if(badballtimeoutl){
+      fill((Math.sin(t/100)*200)*-1,(Math.cos(t/100)*150)*-1,(Math.cos(t/100)*50)*-1);
+      text('Oups, left player is slowing down!', width/2, height/4);
       leftPaddle.slowed();
     }
-    if(!notimeoutr){
-      text('Oups, right player is slowing down!', width/2, height/3);
+    if(badballtimeoutr){
+      fill((Math.sin(t/100)*200)*-1,(Math.cos(t/100)*150)*-1,(Math.cos(t/100)*50)*-1);
+      text('Oups, right player is slowing down!', width/2, height/4);
       rightPaddle.slowed();
     }
   }
@@ -140,6 +179,9 @@ function draw() {
     text('press the mouse to restart', width/2, height/1.5);
     textAlign(CENTER);
     fill(255);
+    for(var i=0; i<=badballs.length; i++){
+      badballs.pop();
+    }
     if (mouseIsPressed){
       gameover = false;
       setup();
