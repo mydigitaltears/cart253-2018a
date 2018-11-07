@@ -96,7 +96,7 @@ function draw() {
     middlewall.display();
     middlewall.update();
     // maximum score for ending screen
-    if(leftPaddle.score > 5 || rightPaddle.score > 5){
+    if(leftPaddle.score > 10 || rightPaddle.score > 10){
       gameover = true;
     }
     // ball display after 50 frames and in function of the set timeouts
