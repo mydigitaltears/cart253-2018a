@@ -11,11 +11,24 @@ let avatarVY = 0;
 let avatarSpeed = 2;
 let myAvatar;
 
+// preload function
+function preload() {
+  animUP = loadAnimation("assets/images/avatarI_0011.png","assets/images/avatarI_0010.png",
+  "assets/images/avatarI_0012.png","assets/images/avatarI_0010.png");
+  animDOWN = loadAnimation("assets/images/avatarI_0002.png","assets/images/avatarI_0001.png",
+  "assets/images/avatarI_0003.png","assets/images/avatarI_0001.png");
+  animLEFT = loadAnimation("assets/images/avatarI_0005.png","assets/images/avatarI_0004.png",
+  "assets/images/avatarI_0006.png","assets/images/avatarI_0004.png");
+  animRIGHT = loadAnimation("assets/images/avatarI_0008.png","assets/images/avatarI_0007.png",
+  "assets/images/avatarI_0009.png","assets/images/avatarI_0007.png");
+}
+
 // setup function
 function setup() {
   createCanvas(640,480);
   background("green");
   frameRate(30);
+  imageMode(CENTER);
   // trying to use a sprite for my avatar
   myAvatar = createSprite(width/2, height/2, 20, 20);
 }
@@ -51,9 +64,11 @@ function handleInput() {
   // Check for horizontal movement
   if (keyIsDown(LEFT_ARROW)) {
     avatarVX = -avatarSpeed;
+    myAvatar.addAnimation("default", animLEFT);
   }
   else if (keyIsDown(RIGHT_ARROW)) {
     avatarVX = avatarSpeed;
+    myAvatar.addAnimation("default", animRIGHT);
   }
   else {
     avatarVX = 0;
@@ -61,9 +76,11 @@ function handleInput() {
   // Check for vertical movement
   if (keyIsDown(UP_ARROW)) {
     avatarVY = -avatarSpeed;
+    myAvatar.addAnimation("default", animUP);
   }
   else if (keyIsDown(DOWN_ARROW)) {
     avatarVY = avatarSpeed;
+    myAvatar.addAnimation("default", animDOWN);
   }
   else {
     avatarVY = 0;
