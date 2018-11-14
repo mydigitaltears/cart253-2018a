@@ -10,9 +10,16 @@ let avatarVX = 0;
 let avatarVY = 0;
 let avatarSpeed = 2;
 let myAvatar;
+// orientation booleans to trigger the animation once
+let upa = false;
+let doa = false;
+let lea = false;
+let ria = false;
+
 
 // preload function
 function preload() {
+  // I use 3 images for the walking animation, I think it's the way that my spritesheet works
   animUP = loadAnimation("assets/images/avatarI_0011.png","assets/images/avatarI_0010.png",
   "assets/images/avatarI_0012.png","assets/images/avatarI_0010.png");
   animDOWN = loadAnimation("assets/images/avatarI_0002.png","assets/images/avatarI_0001.png",
@@ -64,11 +71,11 @@ function handleInput() {
   // Check for horizontal movement
   if (keyIsDown(LEFT_ARROW)) {
     avatarVX = -avatarSpeed;
-    myAvatar.addAnimation("default", animLEFT);
+    lea=true;
   }
   else if (keyIsDown(RIGHT_ARROW)) {
     avatarVX = avatarSpeed;
-    myAvatar.addAnimation("default", animRIGHT);
+    ria=true;
   }
   else {
     avatarVX = 0;
@@ -76,13 +83,44 @@ function handleInput() {
   // Check for vertical movement
   if (keyIsDown(UP_ARROW)) {
     avatarVY = -avatarSpeed;
-    myAvatar.addAnimation("default", animUP);
+    upa=true;
   }
   else if (keyIsDown(DOWN_ARROW)) {
     avatarVY = avatarSpeed;
-    myAvatar.addAnimation("default", animDOWN);
+    doa=true;
   }
   else {
     avatarVY = 0;
+  }
+}
+
+// keyReleased to falsify the animation booleans
+function keyReleased() {
+  if (keyCode === LEFT_ARROW){
+    lea=false;
+  }
+  if (keyCode === RIGHT_ARROW){
+    ria=false;
+  }
+  if (keyCode === DOWN_ARROW){
+    doa=false;
+  }
+  if (keyCode === UP_ARROW){
+    upa=false;
+  }
+}
+
+function keyPressed() {
+  if (lea === true){
+    myAvatar.addAnimation("default", animLEFT);
+  }
+  else if (ria === true){
+    myAvatar.addAnimation("default", animRIGHT);
+  }
+  if (doa === true){
+    myAvatar.addAnimation("default", animDOWN);
+  }
+  if (upa === true){
+    myAvatar.addAnimation("default", animUP);
   }
 }
