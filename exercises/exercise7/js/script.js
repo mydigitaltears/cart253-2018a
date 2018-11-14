@@ -10,6 +10,9 @@ let avatarVX = 0;
 let avatarVY = 0;
 let avatarSpeed = 2;
 let myAvatar;
+// orientation variable to keep track of the avatar orientation so
+// when the avatar stops the stopped animation face the good way
+let orientation;
 // orientation booleans to trigger the animation once
 let upa = false;
 let doa = false;
@@ -28,6 +31,11 @@ function preload() {
   "assets/images/avatarI_0006.png","assets/images/avatarI_0004.png");
   animRIGHT = loadAnimation("assets/images/avatarI_0008.png","assets/images/avatarI_0007.png",
   "assets/images/avatarI_0009.png","assets/images/avatarI_0007.png");
+  // animation for when the avatar is stopped
+  animSUP = loadAnimation("assets/images/avatarI_0010.png");
+  animSDOWN = loadAnimation("assets/images/avatarI_0001.png");
+  animSLEFT = loadAnimation("assets/images/avatarI_0004.png");
+  animSRIGHT = loadAnimation("assets/images/avatarI_0007.png");
 }
 
 // setup function
@@ -38,6 +46,7 @@ function setup() {
   imageMode(CENTER);
   // trying to use a sprite for my avatar
   myAvatar = createSprite(width/2, height/2, 20, 20);
+  myAvatar.addAnimation("default", animSDOWN);
 }
 
 // draw function
@@ -46,6 +55,7 @@ function draw() {
   drawSprites();
   moveMyAvatar();
   handleInput();
+  stop();
 }
 
 // update avatar position with vx and vy
@@ -71,11 +81,11 @@ function handleInput() {
   // Check for horizontal movement
   if (keyIsDown(LEFT_ARROW)) {
     avatarVX = -avatarSpeed;
-    lea=true;
+    orientation = animLEFT;
   }
   else if (keyIsDown(RIGHT_ARROW)) {
     avatarVX = avatarSpeed;
-    ria=true;
+    orientation = animRIGHT;
   }
   else {
     avatarVX = 0;
@@ -83,11 +93,11 @@ function handleInput() {
   // Check for vertical movement
   if (keyIsDown(UP_ARROW)) {
     avatarVY = -avatarSpeed;
-    upa=true;
+    orientation = animUP;
   }
   else if (keyIsDown(DOWN_ARROW)) {
     avatarVY = avatarSpeed;
-    doa=true;
+    orientation = animDOWN;
   }
   else {
     avatarVY = 0;
@@ -110,7 +120,21 @@ function keyReleased() {
   }
 }
 
+// I figured that the keyPressed function is better to activate my animation since it only triggers once
 function keyPressed() {
+  // I need to activate my orientation booleans once so the animation doesn't run every frame
+  if (keyCode === LEFT_ARROW){
+    lea=true;
+  }
+  if (keyCode === RIGHT_ARROW){
+    ria=true;
+  }
+  if (keyCode === DOWN_ARROW){
+    doa=true;
+  }
+  if (keyCode === UP_ARROW){
+    upa=true;
+  }
   if (lea === true){
     myAvatar.addAnimation("default", animLEFT);
   }
@@ -122,5 +146,23 @@ function keyPressed() {
   }
   if (upa === true){
     myAvatar.addAnimation("default", animUP);
+  }
+}
+
+// animation when avatar is stopped
+function stop(){
+  if (avatarVX === 0 && avatarVY ===0){
+    if (orientation === animLEFT){
+      myAvatar.addAnimation("default", animSLEFT);
+    }
+    else if (orientation === animRIGHT){
+      myAvatar.addAnimation("default", animSRIGHT);
+    }
+    else if (orientation === animDOWN){
+      myAvatar.addAnimation("default", animSDOWN);
+    }
+    else if (orientation === animUP){
+      myAvatar.addAnimation("default", animSUP);
+    }
   }
 }
