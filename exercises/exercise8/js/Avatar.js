@@ -15,6 +15,7 @@ function Avatar(x,y,speed,size){
 
 Avatar.prototype.createAvatar = function(){
   this.sprite = createSprite(this.x, this.y, this.size, this.size);
+  this.sprite.setCollider("rectangle",0,this.sprite.width/2,this.sprite.height/2,20);
   this.sprite.addAnimation("default", animSDOWN);
 }
 
@@ -22,6 +23,12 @@ Avatar.prototype.camera = function(){
   camera.zoom = 1;
   camera.position.x = this.sprite.position.x;
   camera.position.y = this.sprite.position.y;
+}
+
+Avatar.prototype.collide = function(){
+  for(var i=0; i<myTrees.length; i++){
+    this.sprite.collide(myTrees[i]);
+  }
 }
 
 Avatar.prototype.moveAvatar = function(){

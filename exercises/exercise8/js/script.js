@@ -34,15 +34,17 @@ function setup() {
   background("green");
   frameRate(30);
   imageMode(CENTER);
-  for (var i=0;i<25;i++){
-    myTree = new Tree(random(SCENE_W), random(SCENE_H), 30,60);
+  myTrees = new Group();
+  for (var i=0;i<50;i++){
+    myTree = new Tree(random(SCENE_W), random(SCENE_H), 80,150);
     myTree.createTree();
+    myTree.sprite.addToGroup(myTrees);
   }
   for (var i=0;i<500;i++){
     myGrass = new Grass(random(SCENE_W), random(SCENE_H), 30,60);
     myGrass.createGrass();
   }
-  myAvatar = new Avatar(SCENE_W/2, SCENE_H/2, 5, 20);
+  myAvatar = new Avatar(SCENE_W/2, SCENE_H/2, 5, 5);
   myAvatar.createAvatar();
   //set the existing sprites' depths in relation to their position
   for(var i=0; i<allSprites.length; i++) {
@@ -60,6 +62,7 @@ function draw() {
   myAvatar.handleInput();
   myAvatar.stop();
   myAvatar.camera();
+  myAvatar.collide();
 }
 
 function keyReleased(){
