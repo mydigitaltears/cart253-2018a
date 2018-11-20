@@ -18,20 +18,26 @@ Avatar.prototype.createAvatar = function(){
   this.sprite.addAnimation("default", animSDOWN);
 }
 
+Avatar.prototype.camera = function(){
+  camera.zoom = 1;
+  camera.position.x = this.sprite.position.x;
+  camera.position.y = this.sprite.position.y;
+}
+
 Avatar.prototype.moveAvatar = function(){
   this.sprite.position.x+= this.vx;
   this.sprite.position.y+= this.vy;
   if (this.sprite.position.x < 0){
     this.sprite.position.x= 0;
   }
-  if (this.sprite.position.x > width){
-    this.sprite.position.x = width;
+  if (this.sprite.position.x > SCENE_W){
+    this.sprite.position.x = SCENE_W;
   }
   if (this.sprite.position.y < 0){
     this.sprite.position.y = 0;
   }
-  if (this.sprite.position.y > height){
-    this.sprite.position.y = height;
+  if (this.sprite.position.y > SCENE_H){
+    this.sprite.position.y = SCENE_H;
   }
 }
 

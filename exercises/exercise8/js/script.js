@@ -4,20 +4,10 @@
 // environement and interacts with different elements
 // in nature. For this I'll use p5 play to use sprite animations
 
-
-// avatar variables
-let avatarVX = 0;
-let avatarVY = 0;
-let avatarSpeed = 2;
-let myAvatar;
-// orientation variable to keep track of the avatar orientation so
-// when the avatar stops the stopped animation face the good way
-let orientation;
-// orientation booleans to trigger the animation once
-let upa = false;
-let doa = false;
-let lea = false;
-let ria = false;
+var bg;
+var frame;
+var SCENE_W = 1600;
+var SCENE_H = 1600;
 
 
 // preload function
@@ -36,15 +26,20 @@ function preload() {
   animSDOWN = loadAnimation("assets/images/avatarI_0001.png");
   animSLEFT = loadAnimation("assets/images/avatarI_0004.png");
   animSRIGHT = loadAnimation("assets/images/avatarI_0007.png");
+  treeSprite = loadAnimation("assets/images/tree.png");
 }
 
 // setup function
 function setup() {
-  createCanvas(640,480);
+  createCanvas(800,600);
   background("green");
   frameRate(30);
   imageMode(CENTER);
-  myAvatar = new Avatar(width/2, height/2, 2, 20);
+  for (var i=0;i<25;i++){
+    myTree = new Tree(random(SCENE_W), random(SCENE_H), 10,40);
+    myTree.createTree();
+  }
+  myAvatar = new Avatar(width/2, height/2, 5, 20);
   myAvatar.createAvatar();
 }
 
@@ -55,6 +50,11 @@ function draw() {
   myAvatar.moveAvatar();
   myAvatar.handleInput();
   myAvatar.stop();
+  myAvatar.camera();
+  //set the existing sprites' depths in relation to their position
+  for(var i=0; i<allSprites.length; i++) {
+    allSprites[i].depth = allSprites[i].position.y;
+  }
 }
 
 function keyReleased(){
