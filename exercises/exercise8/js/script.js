@@ -27,6 +27,7 @@ function preload() {
   animSLEFT = loadAnimation("assets/images/avatarI_0004.png");
   animSRIGHT = loadAnimation("assets/images/avatarI_0007.png");
   treeSprite = loadAnimation("assets/images/tree.png");
+  grassSprite = loadAnimation("assets/images/grass.png");
 }
 
 // setup function
@@ -38,6 +39,10 @@ function setup() {
   for (var i=0;i<25;i++){
     myTree = new Tree(random(SCENE_W), random(SCENE_H), 10,40);
     myTree.createTree();
+  }
+  for (var i=0;i<500;i++){
+    myGrass = new Grass(random(SCENE_W), random(SCENE_H), 10,40);
+    myGrass.createGrass();
   }
   myAvatar = new Avatar(width/2, height/2, 5, 20);
   myAvatar.createAvatar();
