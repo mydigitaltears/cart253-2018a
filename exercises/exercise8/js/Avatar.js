@@ -39,13 +39,10 @@ Avatar.prototype.handleInput = function(){
   // Check for horizontal movement
   if (keyIsDown(LEFT_ARROW)) {
     this.vx = -this.speed;
-    this.lea = true;
     this.orientation = animLEFT;
-    console.log("true")
   }
   else if (keyIsDown(RIGHT_ARROW)) {
     this.vx = this.speed;
-    this.ria = true;
     this.orientation = animRIGHT;
   }
   else {
@@ -54,12 +51,10 @@ Avatar.prototype.handleInput = function(){
   // Check for vertical movement
   if (keyIsDown(UP_ARROW)) {
     this.vy = -this.speed;
-    this.upa = true;
     this.orientation = animUP;
   }
   else if (keyIsDown(DOWN_ARROW)) {
     this.vy = this.speed;
-    this.doa = true;
     this.orientation = animDOWN;
   }
   else {
@@ -82,34 +77,46 @@ Avatar.prototype.keyReleased = function(){
   if (keyCode === UP_ARROW){
     this.upa=false;
   }
-  // if (this.lea === true){
-  //   this.sprite.addAnimation("default", animLEFT);
-  // }
-  // if (this.ria === true){
-  //   this.sprite.addAnimation("default", animRIGHT);
-  // }
-  // if (this.doa === true){
-  //   this.sprite.addAnimation("default", animDOWN);
-  // }
-  // if (this.upa === true){
-  //   this.sprite.addAnimation("default", animUP);
-  // }
+  if (this.lea === true){
+    this.sprite.addAnimation("default", animLEFT);
+  }
+  if (this.ria === true){
+    this.sprite.addAnimation("default", animRIGHT);
+  }
+  if (this.doa === true){
+    this.sprite.addAnimation("default", animDOWN);
+  }
+  if (this.upa === true){
+    this.sprite.addAnimation("default", animUP);
+  }
 }
 
 // I figured that the keyPressed function is better to activate my animation since it only triggers once
 Avatar.prototype.keyPressed = function(){
-    if (this.lea === true){
-      this.sprite.addAnimation("default", animLEFT);
-    }
-    else if (this.ria === true){
-      this.sprite.addAnimation("default", animRIGHT);
-    }
-    if (this.doa === true){
-      this.sprite.addAnimation("default", animDOWN);
-    }
-    if (this.upa === true){
-      this.sprite.addAnimation("default", animUP);
-    }
+  if (keyCode === LEFT_ARROW){
+    this.lea=true;
+  }
+  if (keyCode === RIGHT_ARROW){
+    this.ria=true;
+  }
+  if (keyCode === DOWN_ARROW){
+    this.doa=true;
+  }
+  if (keyCode === UP_ARROW){
+    this.upa=true;
+  }
+  if (this.lea === true){
+    this.sprite.addAnimation("default", animLEFT);
+  }
+  else if (this.ria === true){
+    this.sprite.addAnimation("default", animRIGHT);
+  }
+  if (this.doa === true){
+    this.sprite.addAnimation("default", animDOWN);
+  }
+  if (this.upa === true){
+    this.sprite.addAnimation("default", animUP);
+  }
 }
 
 // animation when avatar is stopped
