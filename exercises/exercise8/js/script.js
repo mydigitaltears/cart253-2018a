@@ -4,8 +4,6 @@
 // environement and interacts with different elements
 // in nature. For this I'll use p5 play to use sprite animations
 
-var bg;
-var frame;
 var SCENE_W = 1600;
 var SCENE_H = 1600;
 
@@ -37,15 +35,21 @@ function setup() {
   frameRate(30);
   imageMode(CENTER);
   for (var i=0;i<25;i++){
-    myTree = new Tree(random(SCENE_W), random(SCENE_H), 10,40);
+    myTree = new Tree(random(SCENE_W), random(SCENE_H), 30,60);
     myTree.createTree();
   }
   for (var i=0;i<500;i++){
-    myGrass = new Grass(random(SCENE_W), random(SCENE_H), 10,40);
+    myGrass = new Grass(random(SCENE_W), random(SCENE_H), 30,60);
     myGrass.createGrass();
   }
-  myAvatar = new Avatar(width/2, height/2, 5, 20);
+  myAvatar = new Avatar(SCENE_W/2, SCENE_H/2, 5, 20);
   myAvatar.createAvatar();
+  //set the existing sprites' depths in relation to their position
+  for(var i=0; i<allSprites.length; i++) {
+    var pos = allSprites[i].position.y;
+    var hei = allSprites[i].height/2;
+    allSprites[i].depth = pos+hei;
+  }
 }
 
 // draw function
@@ -56,10 +60,6 @@ function draw() {
   myAvatar.handleInput();
   myAvatar.stop();
   myAvatar.camera();
-  //set the existing sprites' depths in relation to their position
-  for(var i=0; i<allSprites.length; i++) {
-    allSprites[i].depth = allSprites[i].position.y;
-  }
 }
 
 function keyReleased(){

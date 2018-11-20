@@ -25,6 +25,9 @@ Avatar.prototype.camera = function(){
 }
 
 Avatar.prototype.moveAvatar = function(){
+  var pos = this.sprite.position.y;
+  var hei = this.sprite.height/2;
+  this.sprite.depth = pos+hei;
   this.sprite.position.x+= this.vx;
   this.sprite.position.y+= this.vy;
   if (this.sprite.position.x < 0){
