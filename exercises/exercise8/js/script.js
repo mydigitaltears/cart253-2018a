@@ -4,6 +4,7 @@
 // environement and interacts with different elements
 // in nature. For this I'll use p5 play to use sprite animations
 
+// Full Scene width and height
 var SCENE_W = 1600;
 var SCENE_H = 1600;
 
@@ -24,26 +25,42 @@ function preload() {
   animSDOWN = loadAnimation("assets/images/avatarI_0001.png");
   animSLEFT = loadAnimation("assets/images/avatarI_0004.png");
   animSRIGHT = loadAnimation("assets/images/avatarI_0007.png");
+  // other animation for elements in nature (trees, flowers, grass, etc...)
   treeSprite = loadAnimation("assets/images/tree.png");
   grassSprite = loadAnimation("assets/images/grass.png");
+  spriteTYFlower = loadAnimation("assets/images/tulippeJ.png");
+  spriteTRFlower = loadAnimation("assets/images/tulippeR.png");
+  spritePFlower = loadAnimation("assets/images/pinkF.png");
+  spriteVFlower = loadAnimation("assets/images/purpleF.png");
+  spriteWFlower = loadAnimation("assets/images/whiteF.png");
+  spriteYFlower = loadAnimation("assets/images/yellowF.png");
 }
 
 // setup function
 function setup() {
+  // canvas is now the actual size of the camera
   createCanvas(800,600);
   background("green");
   frameRate(30);
   imageMode(CENTER);
+  // Creating trees at random places
   myTrees = new Group();
   for (var i=0;i<50;i++){
     myTree = new Tree(random(SCENE_W), random(SCENE_H), 80,150);
     myTree.createTree();
     myTree.sprite.addToGroup(myTrees);
   }
+  // Creating grass at random places
   for (var i=0;i<500;i++){
     myGrass = new Grass(random(SCENE_W), random(SCENE_H), 30,60);
     myGrass.createGrass();
   }
+  // Creating flowers at random palces
+  for (var i=0;i<500;i++){
+    myFlower = new Flower(random(SCENE_W), random(SCENE_H), 30,60);
+    myFlower.createFlower();
+  }
+  // Avatar setup
   myAvatar = new Avatar(SCENE_W/2, SCENE_H/2, 5, 5);
   myAvatar.createAvatar();
   //set the existing sprites' depths in relation to their position

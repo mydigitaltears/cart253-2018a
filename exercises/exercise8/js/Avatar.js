@@ -1,3 +1,4 @@
+// Avatar constructor
 function Avatar(x,y,speed,size){
   this.x=x;
   this.y=y;
@@ -13,28 +14,35 @@ function Avatar(x,y,speed,size){
   this.sprite = null;
 }
 
+// Create avatar function
 Avatar.prototype.createAvatar = function(){
   this.sprite = createSprite(this.x, this.y, this.size, this.size);
+  // Collider so the avatar can't walk over trees
   this.sprite.setCollider("rectangle",0,this.sprite.width/2,this.sprite.height/2,20);
   this.sprite.addAnimation("default", animSDOWN);
 }
 
+// camera function to center the canvas on the Avatar
 Avatar.prototype.camera = function(){
   camera.zoom = 1;
   camera.position.x = this.sprite.position.x;
   camera.position.y = this.sprite.position.y;
 }
 
+// collide function
 Avatar.prototype.collide = function(){
   for(var i=0; i<myTrees.length; i++){
     this.sprite.collide(myTrees[i]);
   }
 }
 
+// moveAvatar function
 Avatar.prototype.moveAvatar = function(){
+  // this bloc is to change the depth of the avatar accordingly to it's y position
   var pos = this.sprite.position.y;
   var hei = this.sprite.height/2;
   this.sprite.depth = pos+hei;
+  // standard avatar movement code
   this.sprite.position.x+= this.vx;
   this.sprite.position.y+= this.vy;
   if (this.sprite.position.x < 0){
@@ -51,6 +59,7 @@ Avatar.prototype.moveAvatar = function(){
   }
 }
 
+// handleInput function for movement
 Avatar.prototype.handleInput = function(){
   // Check for horizontal movement
   if (keyIsDown(LEFT_ARROW)) {
@@ -82,7 +91,6 @@ Avatar.prototype.handleInput = function(){
 Avatar.prototype.keyReleased = function(){
   if (keyCode === LEFT_ARROW){
     this.lea=false;
-    console.log("leafasle");
   }
   if (keyCode === RIGHT_ARROW){
     this.ria=false;
