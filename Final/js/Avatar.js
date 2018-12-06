@@ -34,6 +34,7 @@ Avatar.prototype.showEndBar = function(){
   fill(255, 230, 0);
   noStroke();
   rect(camera.position.x-25,camera.position.y-50,this.endurance/2,10);
+  text(timer,camera.position.x-windowWidth/2+50,camera.position.y-windowHeight/2+65);
   fill(255,0,0);
   stroke(3);
   rect(this.sprite.position.x-10,this.sprite.position.y-10,20,20)

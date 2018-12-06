@@ -7,6 +7,8 @@
 // Full Scene width and height
 var SCENE_W = 1000;
 var SCENE_H = 1000;
+var timer;
+var gameStart = false;
 
 
 // preload function
@@ -52,6 +54,12 @@ function preload() {
 function setup() {
   // canvas is now the actual size of the camera
   createCanvas(windowWidth,windowHeight-10);
+  resetSketch();
+
+} // end of setup
+
+function resetSketch() {
+  timer = 2;
   background("green");
   frameRate(30);
   imageMode(CENTER);
@@ -80,7 +88,7 @@ function setup() {
   myTree.sprite.addToGroup(myTrees);
   myFriend = new Friend(randX, randY+15, 20);
   myFriend.createFriend();
-  myAvatar = new Avatar(SCENE_W/2, SCENE_H/2, 20);
+  myAvatar = new Avatar(windowWidth/2,windowHeight/2, 20);
   myAvatar.createAvatar();
   //set the existing sprites' depths in relation to their position
   for(var i=0; i<allSprites.length; i++) {
@@ -88,29 +96,68 @@ function setup() {
     var hei = allSprites[i].height/2;
     allSprites[i].depth = pos+hei;
   }
+  //myAvatar.camera();
+  drawSprites();
+  textAlign(CENTER);
+  textSize(50);
+  textStyle(BOLD);
+  fill(255,255,255);
+  text("press any key to start the game!", windowWidth/2,windowHeight/2-100);
 }
 
 // draw function
 function draw() {
-  background("green");
-  drawSprites();
-  myAvatar.moveAvatar();
-  myAvatar.handleInput();
-  myAvatar.stop();
-  myAvatar.camera();
-  myAvatar.collide();
-  myAvatar.showEndBar();
-  myFriend.moveFriend();
-  myFriend.animation();
-  myFriend.collide();
-  checkDistance();
-  gotchu();
+  if(!gameStart){
+    myAvatar.camera();
+    if(keyCode === 32){
+      gameStart = true;
+    }
+  }
+  else if(gameStart && timer > 0){
+
+    background("green");
+    drawSprites();
+    myAvatar.moveAvatar();
+    myAvatar.showEndBar();
+    myAvatar.handleInput();
+    myAvatar.camera();
+    myAvatar.stop();
+    myAvatar.collide();
+    myFriend.moveFriend();
+    myFriend.animation();
+    myFriend.collide();
+    checkDistance();
+    gotchu();
+    if(frameCount%30==0){
+      timer--;
+      console.log(timer);
+    }
+  }
+  else if (timer == 0){
+    timer = 0;
+    text("FAILED", camera.position.x,camera.position.y)
+    text("Press SPACE to restart", camera.position.x,camera.position.y+70);
+    noLoop();
+    if (keyCode === 32){
+      //set the existing sprites' depths in relation to their position
+      for(var i=0; i<allSprites.length; i++) {
+        allSprites[i].remove();
+      }
+      myAvatar.sprite.remove();
+      myFriend.sprite.remove();
+      resetSketch();
+      loop();
+    }
+  }
 }
 
 function keyReleased(){
   myAvatar.keyReleased();
 }
 function keyPressed(){
+  if(keyCode == 32){
+    loop();
+  }
   myAvatar.keyPressed();
 }
 
@@ -118,13 +165,22 @@ function gotchu(){
   if(keyCode === 32){
     if(myAvatar.sprite.overlap(myFriend.sprite)){
       myFriend.catched=true;
-
     }
   }
   if(myFriend.catched == true){
     //myFriend.sprite.position.x=myAvatar.sprite.position.x+20;
-    myFriend.vy=myAvatar.vy;
-    myFriend.vx=myAvatar.vx;
+    // if(myAvatar.orientation==animLEFT){
+    //   myFriend.orientation=f1ALEFT;
+    // }
+    // if(myAvatar.orientation==animRIGHT){
+    //   myFriend.orientation=f1ARIGHT;
+    // }
+    // if(myAvatar.orientation==animUP){
+    //   myFriend.orientation=f1AUP;
+    // }
+    // if(myAvatar.orientation==animDOWN){
+    //   myFriend.orientation=f1ADOWN;
+    // }
     myFriend.stop=true;
     //myFriend.sprite.position.y=myAvatar.sprite.position.y+20;
     console.log("catch");
@@ -134,14 +190,11 @@ function gotchu(){
 function checkDistance(){
   var xd = abs(myAvatar.sprite.position.x-myFriend.sprite.position.x);
   var yd = abs(myAvatar.sprite.position.y-myFriend.sprite.position.y);
-
-  //console.log(xd,yd);
   if (xd < 60 && yd < 60){
     myFriend.start = true;
   }
   if (xd+yd < 100 && myFriend.start == true && myFriend.stop == false){
     if (xd>yd){
-
       if (myAvatar.sprite.position.x>myFriend.sprite.position.x){
         // myFriend.vx=-7;
         // myFriend.vy=0;
@@ -165,6 +218,5 @@ function checkDistance(){
         myFriend.orientation = f1ADOWN;
       }
     }
-
   }
 }

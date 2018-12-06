@@ -79,16 +79,16 @@ Friend.prototype.animation = function(){
   if(this.c2 != this.c){
     this.change = true;
   }
-  if (this.orientation == f1ALEFT){
+  if (this.orientation == f1ALEFT && this.stop==false){
     this.vx = -7;
   }
-  if (this.orientation == f1ARIGHT){
+  if (this.orientation == f1ARIGHT && this.stop==false){
     this.vx = 7;
   }
-  if (this.orientation == f1AUP){
+  if (this.orientation == f1AUP && this.stop==false){
     this.vy = -7;
   }
-  if (this.orientation == f1ADOWN){
+  if (this.orientation == f1ADOWN && this.stop==false){
     this.vy = 7;
   }
   this.c2 = this.c;
@@ -108,6 +108,11 @@ Friend.prototype.animation = function(){
   else if (this.orientation == f1AUP && this.change == true){
     this.sprite.addAnimation("default", f1AUP);
     this.change = false;
+  }
+
+  if(this.stop == true){
+    this.vx=0;
+    this.vy=0;
   }
 }
 
