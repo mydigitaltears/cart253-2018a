@@ -1,15 +1,25 @@
-// Project 3 Prototype 1
-// I want to make a fun and simple roleplaying game
-// in which the player explores a natural kind of
-// environement and interacts with different elements
-// in nature. For this I'll use p5 play to use sprite animations
+// Final project for cart 253!
+// By: Xavier Touikan
+//
+// I made a hide and seek kind of game where the user
+// looks for his friends in a forest. When the user approaches
+// one of his friends they will start to flee and he will have
+// to try to catch them. I wanted to implement a boost mechanic
+// that makes the user faster than the bots, but slower at normal
+// speed. Finally I did try to implement a kind of lvlup system
+// where the user gain pers on each level, but I'm unsure of the
+// balance yet. Every level will increase the number of friend to
+// find by 1 and the timer by 5 seconds.
 
 // Full Scene width and height
-var SCENE_W = 1000;
-var SCENE_H = 1000;
-var timer;
+var SCENE_W = 1800;
+var SCENE_H = 1800;
+// timer var
+var timer = 45;
 var gameStart = false;
-
+var nbFriends = 1;
+var myFriends = [];
+var speed = 6;
 
 // preload function
 function preload() {
@@ -27,6 +37,7 @@ function preload() {
   animSDOWN = loadAnimation("assets/images/avatarI_0001.png");
   animSLEFT = loadAnimation("assets/images/avatarI_0004.png");
   animSRIGHT = loadAnimation("assets/images/avatarI_0007.png");
+  // same process for the friend animation
   f1AUP = loadAnimation("assets/images/friend1_0011.png","assets/images/friend1_0010.png",
   "assets/images/friend1_0012.png","assets/images/friend1_0010.png");
   f1ADOWN = loadAnimation("assets/images/friend1_0002.png","assets/images/friend1_0001.png",
@@ -53,41 +64,52 @@ function preload() {
 // setup function
 function setup() {
   // canvas is now the actual size of the camera
+  background(0,200,100);
   createCanvas(windowWidth,windowHeight-10);
+  // found out that using a reset function is better than
+  // calling setup()
   resetSketch();
 
 } // end of setup
 
+// reset function()
 function resetSketch() {
-  timer = 2;
-  background("green");
+  background(0,200,100);
   frameRate(30);
   imageMode(CENTER);
   // Creating trees at random places
   myTrees = new Group();
-  for (var i=0;i<10;i++){
+  for (var i=0;i<90;i++){
     myTree = new Tree(random(SCENE_W), random(SCENE_H), 80,150);
     myTree.createTree();
     myTree.sprite.addToGroup(myTrees);
   }
   // Creating grass at random places
-  for (var i=0;i<100;i++){
+  myGrasses = new Group();
+  for (var i=0;i<500;i++){
     myGrass = new Grass(random(SCENE_W), random(SCENE_H), 30,60);
     myGrass.createGrass();
+    myGrass.sprite.addToGroup(myGrasses);
   }
   // Creating flowers at random palces
-  for (var i=0;i<50;i++){
+  myFlowers = new Group();
+  for (var i=0;i<200;i++){
     myFlower = new Flower(random(SCENE_W), random(SCENE_H), 30,60);
     myFlower.createFlower();
+    myFlower.sprite.addToGroup(myFlowers);
   }
-  // Avatar setup
-  var randX=random(SCENE_W);
-  var randY=random(SCENE_H);
-  myTree = new Tree(randX,randY, 80,150);
-  myTree.createTree();
-  myTree.sprite.addToGroup(myTrees);
-  myFriend = new Friend(randX, randY+15, 20);
-  myFriend.createFriend();
+  // creating friends behind trees
+  for (var i=0;i<nbFriends;i++){
+    var randX=random(SCENE_W);
+    var randY=random(SCENE_H);
+    myTree = new Tree(randX,randY, 80,150);
+    myTree.createTree();
+    myTree.sprite.addToGroup(myTrees);
+    myFriend = new Friend(randX, randY+15, 20);
+    myFriend.createFriend();
+    myFriends.push(myFriend);
+  }
+  // avatar setup
   myAvatar = new Avatar(windowWidth/2,windowHeight/2, 20);
   myAvatar.createAvatar();
   //set the existing sprites' depths in relation to their position
@@ -96,26 +118,34 @@ function resetSketch() {
     var hei = allSprites[i].height/2;
     allSprites[i].depth = pos+hei;
   }
-  //myAvatar.camera();
+  // starting message
   drawSprites();
+  fill(0,200,100,200);
+  noStroke();
+  rectMode(CENTER);
+  rect(windowWidth/2,windowHeight/2-50,windowWidth-200,windowHeight-200);
   textAlign(CENTER);
-  textSize(50);
+  textSize(30);
   textStyle(BOLD);
   fill(255,255,255);
-  text("press any key to start the game!", windowWidth/2,windowHeight/2-100);
+  text("-> You are playing hide and seek in the forest, catch all of your friends to win", windowWidth/2,windowHeight/2-200);
+  text("-> Use the arrow keys to move and shift to sprint", windowWidth/2,windowHeight/2-100);
+  text("-> Watch your stamina bar", windowWidth/2,windowHeight/2);
+  text("-> press the ENTER key to start the game!", windowWidth/2,windowHeight/2+100);
 }
 
 // draw function
 function draw() {
+  // gamestart function to start playing
   if(!gameStart){
     myAvatar.camera();
-    if(keyCode === 32){
+    if(keyCode === ENTER){
       gameStart = true;
     }
   }
+  // main part of the draw function
   else if(gameStart && timer > 0){
-
-    background("green");
+    background(0,200,100);
     drawSprites();
     myAvatar.moveAvatar();
     myAvatar.showEndBar();
@@ -123,99 +153,150 @@ function draw() {
     myAvatar.camera();
     myAvatar.stop();
     myAvatar.collide();
-    myFriend.moveFriend();
-    myFriend.animation();
-    myFriend.collide();
+    for(var i=0; i<myFriends.length; i++){
+      myFriends[i].moveFriend();
+      myFriends[i].animation();
+      myFriends[i].collide();
+    }
     checkDistance();
     gotchu();
     if(frameCount%30==0){
       timer--;
-      console.log(timer);
     }
   }
+  // if the user runs out of time
   else if (timer == 0){
     timer = 0;
-    text("FAILED", camera.position.x,camera.position.y)
-    text("Press SPACE to restart", camera.position.x,camera.position.y+70);
+    text("FAILED, you reached the lvl "+nbFriends, camera.position.x,camera.position.y)
+    text("Press ENTER to restart", camera.position.x,camera.position.y+70);
     noLoop();
-    if (keyCode === 32){
-      //set the existing sprites' depths in relation to their position
-      for(var i=0; i<allSprites.length; i++) {
-        allSprites[i].remove();
+    // press ENTER to reset the game
+    if (keyCode === ENTER){
+      // removing the sprites in a for loop wasn't working properly
+      // so I had to use this do / while function
+      do {
+          allSprites[0].remove();
+      } while(allSprites[0] !== undefined)
+
+      // removing the friends
+      for(var i=0;i<myFriends.length;i++){
+        myFriends[i].catched=false;
+        myFriends.splice(0);
       }
-      myAvatar.sprite.remove();
-      myFriend.sprite.remove();
+      // resetting the settings
+      speed = 6;
+      myAvatar.endurance = 100;
+      myAvatar.refillSpeed = 1;
+      timer = 45;
+      nbFriends=1;
       resetSketch();
       loop();
     }
   }
+} // end of draw
+
+// success function()
+function success(){
+  // text on success
+  fill(255,255,255);
+  text("SUCCESS", camera.position.x,camera.position.y+70)
+  text("Press the ENTER to increase your base speed", camera.position.x,camera.position.y+140);
+  text("Press the SPACE to increase your endurance / refill speed", camera.position.x,camera.position.y+180);
+  noLoop();
+  // two choice of power ups on success
+  // first choice, increase speed
+  if (keyCode === ENTER) {
+    speed += 0.2;
+    do {
+        allSprites[0].remove();
+    } while(allSprites[0] !== undefined)
+
+    for(var i=0;i<myFriends.length;i++){
+      myFriends[i].catched=false;
+      myFriends.splice(0);
+    }
+    timer = 45+5*nbFriends;
+    nbFriends++;
+    resetSketch();
+    loop();
+  }
+  // 2nd choice, increase stamina
+  else if (keyCode === 32) {
+    myAvatar.endurance += 10;
+    myAvatar.refillSpeed += 0.1;
+    do {
+        allSprites[0].remove();
+    } while(allSprites[0] !== undefined)
+
+    for(var i=0;i<myFriends.length;i++){
+      myFriends[i].catched=false;
+      myFriends.splice(0);
+    }
+    timer = 45+5*nbFriends;
+    nbFriends++;
+    resetSketch();
+    loop();
+  }
 }
 
+// keyreleased for animation purpose
 function keyReleased(){
   myAvatar.keyReleased();
 }
+// keyPressed to restart the loop and aniation purpose too
 function keyPressed(){
-  if(keyCode == 32){
+  if(keyCode == ENTER || keyCode === 32){
     loop();
   }
   myAvatar.keyPressed();
 }
 
+// function that counts the overlaps for catch
+// and tracks the number of friends already catched
 function gotchu(){
-  if(keyCode === 32){
-    if(myAvatar.sprite.overlap(myFriend.sprite)){
-      myFriend.catched=true;
+  var z = nbFriends;
+  for(var i=0; i<myFriends.length; i++){
+    if(myAvatar.sprite.overlap(myFriends[i].sprite)){
+      myFriends[i].catched=true;
+    }
+    if(myFriends[i].catched == true){
+      myFriends[i].stop=true;
+      text("You Got me!",myFriends[i].sprite.position.x,myFriends[i].sprite.position.y-30);
+      z--;
+      console.log(z);
     }
   }
-  if(myFriend.catched == true){
-    //myFriend.sprite.position.x=myAvatar.sprite.position.x+20;
-    // if(myAvatar.orientation==animLEFT){
-    //   myFriend.orientation=f1ALEFT;
-    // }
-    // if(myAvatar.orientation==animRIGHT){
-    //   myFriend.orientation=f1ARIGHT;
-    // }
-    // if(myAvatar.orientation==animUP){
-    //   myFriend.orientation=f1AUP;
-    // }
-    // if(myAvatar.orientation==animDOWN){
-    //   myFriend.orientation=f1ADOWN;
-    // }
-    myFriend.stop=true;
-    //myFriend.sprite.position.y=myAvatar.sprite.position.y+20;
-    console.log("catch");
+  if(z==0){
+    success();
   }
 }
 
+// check the distance for the flee mechanic
 function checkDistance(){
-  var xd = abs(myAvatar.sprite.position.x-myFriend.sprite.position.x);
-  var yd = abs(myAvatar.sprite.position.y-myFriend.sprite.position.y);
-  if (xd < 60 && yd < 60){
-    myFriend.start = true;
-  }
-  if (xd+yd < 100 && myFriend.start == true && myFriend.stop == false){
-    if (xd>yd){
-      if (myAvatar.sprite.position.x>myFriend.sprite.position.x){
-        // myFriend.vx=-7;
-        // myFriend.vy=0;
-        myFriend.orientation = f1ALEFT;
-      }
-      else {
-        // myFriend.vx=7;
-        // myFriend.vy=0;
-        myFriend.orientation = f1ARIGHT;
-      }
+  for(var i=0; i<myFriends.length; i++){
+    var xd = abs(myAvatar.sprite.position.x-myFriends[i].sprite.position.x);
+    var yd = abs(myAvatar.sprite.position.y-myFriends[i].sprite.position.y);
+    // when the user is under 200 points near a friend this one will start to flee
+    if (xd < 200 && yd < 200){
+        myFriends[i].start = true;
     }
-    else if (xd<yd){
-      if (myAvatar.sprite.position.y>myFriend.sprite.position.y){
-        // myFriend.vy=-7;
-        // myFriend.vx=0;
-        myFriend.orientation = f1AUP;
+    // the friend will go in the opposite direction of the user
+    if (xd+yd < 200 && myFriends[i].start == true && myFriends[i].stop == false){
+      if (xd>yd){
+        if (myAvatar.sprite.position.x>myFriends[i].sprite.position.x){
+          myFriends[i].orientation = f1ALEFT;
+        }
+        else {
+          myFriends[i].orientation = f1ARIGHT;
+        }
       }
-      else {
-        // myFriend.vy=7;
-        // myFriend.vx=0;
-        myFriend.orientation = f1ADOWN;
+      else if (xd<yd){
+        if (myAvatar.sprite.position.y>myFriends[i].sprite.position.y){
+          myFriends[i].orientation = f1AUP;
+        }
+        else {
+          myFriends[i].orientation = f1ADOWN;
+        }
       }
     }
   }

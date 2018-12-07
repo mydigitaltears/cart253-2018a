@@ -4,8 +4,9 @@ function Avatar(x,y,size){
   this.y=y;
   this.vx=0;
   this.vy=0;
-  this.speed=5;
+  this.speed=speed;
   this.endurance=100;
+  this.refillSpeed=1;
   this.size=size;
   this.orientation;
   this.upa=false;
@@ -30,14 +31,14 @@ Avatar.prototype.camera = function(){
   camera.position.y = this.sprite.position.y;
 }
 
+// function to show the endurance bar on top and the timer / nb of friends to find
 Avatar.prototype.showEndBar = function(){
   fill(255, 230, 0);
   noStroke();
-  rect(camera.position.x-25,camera.position.y-50,this.endurance/2,10);
+  rect(camera.position.x,camera.position.y-50,this.endurance/2,10);
   text(timer,camera.position.x-windowWidth/2+50,camera.position.y-windowHeight/2+65);
-  fill(255,0,0);
-  stroke(3);
-  rect(this.sprite.position.x-10,this.sprite.position.y-10,20,20)
+  textSize(30);
+  text("Number of friends to find: "+nbFriends,camera.position.x,camera.position.y-windowHeight/2+40);
 }
 
 // collide function
@@ -97,13 +98,13 @@ Avatar.prototype.handleInput = function(){
     this.vy = 0;
   }
   if( keyIsDown(SHIFT) && this.endurance > 1) {
-    this.speed = 10;
-    this.endurance -= 2;
+    this.speed = 2*speed;
+    this.endurance -= 1.5;
   }
   else {
-    this.speed = 5;
+    this.speed = speed;
     if(this.endurance<100){
-      this.endurance++;
+      this.endurance += this.refillSpeed;
     }
   }
 }

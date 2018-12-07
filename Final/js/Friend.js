@@ -4,6 +4,7 @@ function Friend(x,y,size){
   this.y=y;
   this.vx=0;
   this.vy=0;
+  this.speed=8;
   this.size=size;
   this.start=false;
   this.stop=false;
@@ -15,10 +16,10 @@ function Friend(x,y,size){
   this.sprite = null;
 }
 
-// Create avatar function
+// Create friend function
 Friend.prototype.createFriend = function(){
   this.sprite = createSprite(this.x, this.y, this.size, this.size);
-  // Collider so the avatar can't walk over trees
+  // Collider so the friend can't walk over trees
   this.sprite.setCollider("rectangle",0,this.sprite.width/2,60,60);
   this.sprite.addAnimation("default", f1SDOWN);
 }
@@ -28,68 +29,28 @@ Friend.prototype.createFriend = function(){
 Friend.prototype.collide = function(){
   for(var i=0; i<myTrees.length; i++){
     this.sprite.collide(myTrees[i]);
-    // if (this.sprite.overlap(myTrees[i])){
-    //   var k = int(random(1,2))
-    //   if(abs(this.vx)>0){
-    //     if(k == 1){
-    //       // this.vy=6;
-    //       // this.vx=0;
-    //       this.orientation = f1ADOWN;
-    //     }
-    //     else {
-    //       // this.vy=-6;
-    //       // this.vx=0;
-    //       this.orientation = f1AUP;
-    //     }
-    //   }
-    //   else if(abs(this.vy)>0){
-    //     console.log("yup");
-    //     if(k == 1){
-    //       // this.vx=6;
-    //       // this.vy=0;
-    //       this.orientation = f1ARIGHT;
-    //     }
-    //     else {
-    //       // this.vx=-6;
-    //       // this.vy=0;
-    //       this.orientation = f1ALEFT;
-    //     }
-    //   }
-    // }
   }
 }
 
-
+// animation function to handle the animation with the orienation of the sprite
 Friend.prototype.animation = function(){
-  stroke(3);
-  rect(this.sprite.position.x-10,this.sprite.position.y-10,20,20)
-  // if (this.vx < 0){
-  //   this.orientation = f1ALEFT;
-  // }
-  // else if (this.vx > 0){
-  //   this.orientation = f1ARIGHT;
-  // }
-  // else if (this.vy < 0){
-  //   this.orientation = f1AUP;
-  // }
-  // else if (this.vy > 0){
-  //   this.orientation = f1ADOWN;
-  // }
   this.c = this.vx+this.vy;
+  // I had to use two values (c and c2) to make the code execute once
+  // otherwise the animation would be stuck on the first frame
   if(this.c2 != this.c){
     this.change = true;
   }
   if (this.orientation == f1ALEFT && this.stop==false){
-    this.vx = -7;
+    this.vx = -this.speed;
   }
   if (this.orientation == f1ARIGHT && this.stop==false){
-    this.vx = 7;
+    this.vx = this.speed;
   }
   if (this.orientation == f1AUP && this.stop==false){
-    this.vy = -7;
+    this.vy = -this.speed;
   }
   if (this.orientation == f1ADOWN && this.stop==false){
-    this.vy = 7;
+    this.vy = this.speed;
   }
   this.c2 = this.c;
 
@@ -109,42 +70,35 @@ Friend.prototype.animation = function(){
     this.sprite.addAnimation("default", f1AUP);
     this.change = false;
   }
-
+  // stay still on stop
   if(this.stop == true){
     this.vx=0;
     this.vy=0;
   }
 }
 
-// moveAvatar function
+// moveFriend function
+// same as moveAvatar
 Friend.prototype.moveFriend = function(){
-  // this bloc is to change the depth of the avatar accordingly to it's y position
+  // this bloc is to change the depth of the friend accordingly to it's y position
   var pos = this.sprite.position.y;
   var hei = this.sprite.height/2;
   this.sprite.depth = pos+hei;
 
-  // standard avatar movement code
+  // standard friendmovement code
   this.sprite.position.x+= this.vx;
   this.sprite.position.y+= this.vy;
 
   if (this.sprite.position.x < 0){
-    //this.sprite.position.x= 0;
-    //this.vx=-this.vx;
     this.orientation = f1ARIGHT;
   }
   if (this.sprite.position.x > SCENE_W){
-    // this.sprite.position.x = SCENE_W;
-    // this.vx=-this.vx;
     this.orientation = f1ALEFT;
   }
   if (this.sprite.position.y < 0){
-    // this.sprite.position.y = 0;
-    // this.vy=-this.vy;
     this.orientation = f1ADOWN;
   }
   if (this.sprite.position.y > SCENE_H){
-    // this.sprite.position.y = SCENE_H;
-    // this.vy=-this.vy;
     this.orientation = f1AUP;
   }
 }
