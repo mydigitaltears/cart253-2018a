@@ -12,10 +12,14 @@
 // find by 1 and the timer by 5 seconds.
 
 // Full Scene width and height
-var SCENE_W = 1800;
-var SCENE_H = 1800;
+var SCENE_W = 1000;
+var SCENE_H = 1000;
+var nbGrass = 150;
+var nbTrees = 30;
+var nbFlowers = 70;
 // timer var
-var timer = 45;
+var baseTimer = 30;
+var timer;
 var gameStart = false;
 var nbFriends = 1;
 var myFriends = [];
@@ -77,23 +81,24 @@ function resetSketch() {
   background(0,200,100);
   frameRate(30);
   imageMode(CENTER);
+  timer = baseTimer;
   // Creating trees at random places
   myTrees = new Group();
-  for (var i=0;i<90;i++){
+  for (var i=0;i<nbTrees;i++){
     myTree = new Tree(random(SCENE_W), random(SCENE_H), 80,150);
     myTree.createTree();
     myTree.sprite.addToGroup(myTrees);
   }
   // Creating grass at random places
   myGrasses = new Group();
-  for (var i=0;i<500;i++){
+  for (var i=0;i<nbGrass;i++){
     myGrass = new Grass(random(SCENE_W), random(SCENE_H), 30,60);
     myGrass.createGrass();
     myGrass.sprite.addToGroup(myGrasses);
   }
   // Creating flowers at random palces
   myFlowers = new Group();
-  for (var i=0;i<200;i++){
+  for (var i=0;i<nbFlowers;i++){
     myFlower = new Flower(random(SCENE_W), random(SCENE_H), 30,60);
     myFlower.createFlower();
     myFlower.sprite.addToGroup(myFlowers);
@@ -184,10 +189,15 @@ function draw() {
         myFriends.splice(0);
       }
       // resetting the settings
+      SCENE_W = 1000;
+      SCENE_H = 1000;
+      nbGrass = 150;
+      nbTrees = 30;
+      nbFlowers = 70;
       speed = 6;
       myAvatar.endurance = 100;
       myAvatar.refillSpeed = 1;
-      timer = 45;
+      baseTimer = 30;
       nbFriends=1;
       resetSketch();
       loop();
@@ -200,13 +210,14 @@ function success(){
   // text on success
   fill(255,255,255);
   text("SUCCESS", camera.position.x,camera.position.y+70)
-  text("Press the ENTER to increase your base speed", camera.position.x,camera.position.y+140);
-  text("Press the SPACE to increase your endurance / refill speed", camera.position.x,camera.position.y+180);
+  text("Press ENTER to increase your base speed", camera.position.x,camera.position.y+140);
+  text("Press the SPACE BAR to increase your endurance / refill speed", camera.position.x,camera.position.y+180);
+  text("Press BACKSPACE to increase your time", camera.position.x,camera.position.y+220);
   noLoop();
   // two choice of power ups on success
   // first choice, increase speed
   if (keyCode === ENTER) {
-    speed += 0.2;
+    speed += 0.1;
     do {
         allSprites[0].remove();
     } while(allSprites[0] !== undefined)
@@ -215,14 +226,18 @@ function success(){
       myFriends[i].catched=false;
       myFriends.splice(0);
     }
-    timer = 45+5*nbFriends;
+    SCENE_W += 100;
+    SCENE_H += 100;
+    nbGrass += 15;
+    nbTrees += 3;
+    nbFlowers += 7;
     nbFriends++;
     resetSketch();
     loop();
   }
   // 2nd choice, increase stamina
   else if (keyCode === 32) {
-    myAvatar.endurance += 10;
+    myAvatar.endurance += 5;
     myAvatar.refillSpeed += 0.1;
     do {
         allSprites[0].remove();
@@ -232,7 +247,21 @@ function success(){
       myFriends[i].catched=false;
       myFriends.splice(0);
     }
-    timer = 45+5*nbFriends;
+    nbFriends++;
+    resetSketch();
+    loop();
+  }
+  // 3nd choice, increase basetimer
+  else if (keyCode === BACKSPACE) {
+    baseTimer = baseTimer+3;
+    do {
+        allSprites[0].remove();
+    } while(allSprites[0] !== undefined)
+
+    for(var i=0;i<myFriends.length;i++){
+      myFriends[i].catched=false;
+      myFriends.splice(0);
+    }
     nbFriends++;
     resetSketch();
     loop();
@@ -245,7 +274,7 @@ function keyReleased(){
 }
 // keyPressed to restart the loop and aniation purpose too
 function keyPressed(){
-  if(keyCode == ENTER || keyCode === 32){
+  if(keyCode == ENTER || keyCode === 32 || keyCode === BACKSPACE){
     loop();
   }
   myAvatar.keyPressed();
