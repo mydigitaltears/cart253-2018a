@@ -38,7 +38,7 @@ Avatar.prototype.showEndBar = function(){
   rect(camera.position.x,camera.position.y-50,this.endurance/2,10);
   text(timer,camera.position.x-windowWidth/2+50,camera.position.y-windowHeight/2+65);
   textSize(30);
-  text("Number of friends to find: "+nbFriends,camera.position.x,camera.position.y-windowHeight/2+40);
+  text("Number of friends to find: "+nbFriendsDisp,camera.position.x,camera.position.y-windowHeight/2+40);
 }
 
 // collide function

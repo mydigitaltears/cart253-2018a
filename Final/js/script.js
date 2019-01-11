@@ -22,6 +22,7 @@ var baseTimer = 30;
 var timer;
 var gameStart = false;
 var nbFriends = 1;
+var nbFriendsDisp;
 var myFriends = [];
 var speed = 6;
 
@@ -292,6 +293,7 @@ function gotchu(){
       myFriends[i].stop=true;
       text("You Got me!",myFriends[i].sprite.position.x,myFriends[i].sprite.position.y-30);
       z--;
+      nbFriendsDisp = z;
       console.log(z);
     }
   }
